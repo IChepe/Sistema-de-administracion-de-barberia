@@ -4,10 +4,7 @@
  */
 package com.mycompany.sistemabarberia.Clases;
 
-/**
- *
- * @author sscr
- */
+
 public class Servicio {
     
     private int idServicio;
@@ -71,6 +68,16 @@ public class Servicio {
 
     public void setDuracionest(int Duracionest) {
         this.Duracionest = Duracionest;
+    }
+
+    @Override
+    public String toString() {
+        return "----- Servicio -----" + "\n"
+             + "ID: " + idServicio + "\n"
+             + "Nombre: " + Nombreser + "\n"
+             + "Precio: " + precio + "\n"
+             + "Duracion estimada: " + Duracionest + " min" + "\n"
+             + "Categoria: " + categoria + "\n";
     }
     
     
