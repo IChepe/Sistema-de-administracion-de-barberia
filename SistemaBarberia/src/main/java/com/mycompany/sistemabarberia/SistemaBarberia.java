@@ -6,6 +6,7 @@ package com.mycompany.sistemabarberia;
 
 import javax.swing.JOptionPane;
 
+import com.mycompany.sistemabarberia.Gestores.ClienteGestores;
 import com.mycompany.sistemabarberia.Gestores.ServicioGestores;
 
 /**
@@ -80,7 +81,43 @@ public class SistemaBarberia {
 
                     break;
                 case 1:
-                  
+                    int opcionCliente = 0;
+                    do {
+                        String opcionesCliente[] = {
+                            "1. Agregar Cliente",
+                            "2. Consultar Clientes",
+                            "3. Editar Cliente",
+                            "4. Eliminar Cliente",
+                            "5. Regresar al Menú Principal"
+                        };
+                        opcionCliente = JOptionPane.showOptionDialog(null, "Seleccione una opción", "Gestión de Clientes",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcionesCliente, opcionesCliente[0]);
+
+                        if (opcionCliente == JOptionPane.CLOSED_OPTION) {
+                            break;
+                        }
+
+                        switch (opcionCliente) {
+                            case 0:
+                                ClienteGestores.AgregarCliente();
+                                break;
+                            case 1:
+                                ClienteGestores.consultarClientes();
+                                break;
+                            case 2:
+                                ClienteGestores.editarCliente();
+                                break;
+                            case 3:
+                                ClienteGestores.eliminarCliente();
+                                break;
+                            case 4:
+                                // Regresar al menú principal
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(null, "Opción inválida. Intente nuevamente.");
+                        }
+                    } while (opcionCliente != 4);
+
                     break;
                 case 2:
                    

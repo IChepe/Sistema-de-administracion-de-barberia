@@ -91,7 +91,14 @@ private String notas;
 
     @Override
     public String toString() {
-        return "Cliente{" + "id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", telefono=" + telefono + ", correo=" + correo + ", fechaNacimiento=" + fechaNacimiento + ", fechaRegistro=" + fechaRegistro + ", notas=" + notas + '}';
+        return "----- Cliente -----" + "\n"
+             + "ID: " + id + "\n"
+             + "Nombre: " + nombre + " " + apellido + "\n"
+             + "Telefono: " + telefono + "\n"
+             + "Correo: " + correo + "\n"
+             + "Fecha de nacimiento: " + fechaNacimiento + "\n"
+             + "Fecha de registro: " + fechaRegistro + "\n"
+             + "Notas: " + notas + "\n";
     }
 
 
