@@ -12,22 +12,25 @@ public class Servicio {
     private double precio;
     private int Duracionest;
     private String categoria;
- 
-    
+    private boolean estado;
+
+
     public Servicio (){
        idServicio = 0;
        Nombreser = "";
        precio = 0;
        Duracionest = 0;
        categoria = "";
+       estado = true;
     }
 
-    public Servicio(int idServicio, String Nombreser, double precio, int Duracionest, String categoria) {
+    public Servicio(int idServicio, String Nombreser, double precio, int Duracionest, String categoria, boolean estado) {
         this.idServicio = idServicio;
         this.Nombreser = Nombreser;
         this.precio = precio;
         this.Duracionest = Duracionest;
         this.categoria = categoria;
+        this.estado = estado;
     }
 
     public String getCategoria() {
@@ -70,6 +73,14 @@ public class Servicio {
         this.Duracionest = Duracionest;
     }
 
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
         return "----- Servicio -----" + "\n"
@@ -77,7 +88,8 @@ public class Servicio {
              + "Nombre: " + Nombreser + "\n"
              + "Precio: " + precio + "\n"
              + "Duracion estimada: " + Duracionest + " min" + "\n"
-             + "Categoria: " + categoria + "\n";
+             + "Categoria: " + categoria + "\n"
+             + "Estado: " + (estado ? "Activo" : "Inactivo") + "\n";
     }
     
     

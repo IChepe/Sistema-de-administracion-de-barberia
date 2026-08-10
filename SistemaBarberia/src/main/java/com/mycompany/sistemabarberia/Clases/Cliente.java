@@ -9,9 +9,10 @@ private String telefono;
 private String correo;
 private String fechaNacimiento;
 private String fechaRegistro;
-private String notas;    
+private String notas;
+private boolean estado;
 
-    public Cliente(int id, String nombre, String apellido, String telefono, String correo, String fechaNacimiento, String fechaRegistro, String notas) {
+    public Cliente(int id, String nombre, String apellido, String telefono, String correo, String fechaNacimiento, String fechaRegistro, String notas, boolean estado) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -20,9 +21,11 @@ private String notas;
         this.fechaNacimiento = fechaNacimiento;
         this.fechaRegistro = fechaRegistro;
         this.notas = notas;
+        this.estado = estado;
     }
 
     public Cliente() {
+        this.estado = true;
     }
     
     public int getId() {
@@ -89,6 +92,14 @@ private String notas;
         this.notas = notas;
     }
 
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
         return "----- Cliente -----" + "\n"
@@ -98,7 +109,8 @@ private String notas;
              + "Correo: " + correo + "\n"
              + "Fecha de nacimiento: " + fechaNacimiento + "\n"
              + "Fecha de registro: " + fechaRegistro + "\n"
-             + "Notas: " + notas + "\n";
+             + "Notas: " + notas + "\n"
+             + "Estado: " + (estado ? "Activo" : "Inactivo") + "\n";
     }
 
 

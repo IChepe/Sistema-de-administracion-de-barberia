@@ -29,7 +29,8 @@ public class ServicioGestores {
         }
         servicios = copia;
 
-        servicios[contador - 1] = new Servicio(id, nombreSer, precioSer, duracionSer, categoriaSer);
+        // Todo servicio nuevo entra activo.
+        servicios[contador - 1] = new Servicio(id, nombreSer, precioSer, duracionSer, categoriaSer, true);
 
 
     }
@@ -41,12 +42,19 @@ public class ServicioGestores {
             JOptionPane.showMessageDialog(null, "No hay servicios registrados");
         } else {
             String mensaje = "Servicios registrados:\n";
+            int activos = 0;
             for (int i = 0; i < contador; i++) {
-                if (servicios[i] != null) {
+                // Solo se muestran los que tienen el estado en true.
+                if (servicios[i] != null && servicios[i].isEstado()) {
                     mensaje += servicios[i].toString() + "\n";
+                    activos++;
                 }
             }
-            JOptionPane.showMessageDialog(null, mensaje);
+            if (activos == 0) {
+                JOptionPane.showMessageDialog(null, "No hay servicios activos");
+            } else {
+                JOptionPane.showMessageDialog(null, mensaje);
+            }
         }
 
 
@@ -64,7 +72,7 @@ public class ServicioGestores {
                     double nuevoPrecio = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo precio del servicio:"));
                     int nuevaDuracion = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la nueva duración del servicio:"));
                     String nuevaCategoria = JOptionPane.showInputDialog("Ingrese la nueva categoría del servicio:");
-                    servicios[i] = new Servicio(idBusqueda, nuevoNombre, nuevoPrecio, nuevaDuracion, nuevaCategoria);
+                    servicios[i] = new Servicio(idBusqueda, nuevoNombre, nuevoPrecio, nuevaDuracion, nuevaCategoria, servicios[i].isEstado());
                     JOptionPane.showMessageDialog(null, "Servicio editado correctamente.");
                     return;
                 }
@@ -78,7 +86,7 @@ public class ServicioGestores {
                     double nuevoPrecio = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo precio del servicio:"));
                     int nuevaDuracion = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la nueva duración del servicio:"));
                     String nuevaCategoria = JOptionPane.showInputDialog("Ingrese la nueva categoría del servicio:");
-                    servicios[i] = new Servicio(servicios[i].getIdServicio(), nuevoNombre, nuevoPrecio, nuevaDuracion, nuevaCategoria);
+                    servicios[i] = new Servicio(servicios[i].getIdServicio(), nuevoNombre, nuevoPrecio, nuevaDuracion, nuevaCategoria, servicios[i].isEstado());
                     JOptionPane.showMessageDialog(null, "Servicio editado correctamente.");
                     return;
                 }
@@ -95,8 +103,7 @@ public class ServicioGestores {
             int idBusqueda = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del servicio a eliminar:"));
             for (int i = 0; i < contador; i++) {
                 if (servicios[i].getIdServicio() == idBusqueda) {
-                    eliminarEnPosicion(contador);
-                    JOptionPane.showMessageDialog(null, "Servicio eliminado correctamente.");
+                    cambiarEstado(i);
                     return;
                 }
             }
@@ -105,8 +112,7 @@ public class ServicioGestores {
             String nombreBusqueda = JOptionPane.showInputDialog("Ingrese el nombre del servicio a eliminar:");
             for (int i = 0; i < contador; i++) {
                 if (servicios[i].getNombreser().contains(nombreBusqueda)) {
-                    eliminarEnPosicion(i);
-                    JOptionPane.showMessageDialog(null, "Servicio eliminado correctamente.");
+                    cambiarEstado(i);
                     return;
                 }
             }
@@ -115,19 +121,28 @@ public class ServicioGestores {
     }
 
 
-    
-    public static void eliminarEnPosicion(int posicion) {
+    // Eliminado logico: el servicio NO sale del arreglo, solo se le cambia el estado.
+    public static void cambiarEstado(int posicion) {
 
-        Servicio[] copia = new Servicio[servicios.length - 1];
-        int j = 0;
-        for (int i = 0; i < servicios.length; i++) {
-            if (i != posicion) {
-                copia[j] = servicios[i];
-                j++;
-            }
+        String opciones[] = { "Activar", "Desactivar" };
+        int seleccion = JOptionPane.showOptionDialog(null,
+                "Servicio: " + servicios[posicion].getNombreser() + "\n"
+                + "Estado actual: " + (servicios[posicion].isEstado() ? "Activo" : "Inactivo") + "\n"
+                + "¿Que desea hacer?",
+                "Estado del Servicio",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+
+        if (seleccion == JOptionPane.CLOSED_OPTION) {
+            return;
         }
-        servicios = copia;
-        contador--;
+
+        if (seleccion == 0) {
+            servicios[posicion].setEstado(true);
+            JOptionPane.showMessageDialog(null, "Servicio activado correctamente.");
+        } else {
+            servicios[posicion].setEstado(false);
+            JOptionPane.showMessageDialog(null, "Servicio desactivado correctamente.");
+        }
 
     }
 

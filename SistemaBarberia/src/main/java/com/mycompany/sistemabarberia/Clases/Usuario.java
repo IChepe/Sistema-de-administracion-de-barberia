@@ -91,7 +91,13 @@ private String fechaRegistro;
 
     @Override
     public String toString() {
-        return "Usuario{" + "id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", email=" + email + ", password=" + password + ", rol=" + rol + ", estado=" + estado + ", fechaRegistro=" + fechaRegistro + '}';
+        return "----- Usuario -----" + "\n"
+             + "ID: " + id + "\n"
+             + "Nombre: " + nombre + " " + apellido + "\n"
+             + "Email: " + email + "\n"
+             + "Rol: " + rol + "\n"
+             + "Estado: " + (estado ? "Activo" : "Inactivo") + "\n"
+             + "Fecha de registro: " + fechaRegistro + "\n";
     }
 
 

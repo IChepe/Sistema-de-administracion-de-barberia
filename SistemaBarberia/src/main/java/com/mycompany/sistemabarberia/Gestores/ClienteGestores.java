@@ -32,7 +32,8 @@ public class ClienteGestores {
         }
         clientes = copia;
 
-        clientes[contador - 1] = new Cliente(id, nombreCli, apellidoCli, telefonoCli, correoCli, fechaNacimientoCli, fechaRegistroCli, notasCli);
+        // Todo cliente nuevo entra activo.
+        clientes[contador - 1] = new Cliente(id, nombreCli, apellidoCli, telefonoCli, correoCli, fechaNacimientoCli, fechaRegistroCli, notasCli, true);
 
 
     }
@@ -44,12 +45,19 @@ public class ClienteGestores {
             JOptionPane.showMessageDialog(null, "No hay clientes registrados");
         } else {
             String mensaje = "Clientes registrados:\n";
+            int activos = 0;
             for (int i = 0; i < contador; i++) {
-                if (clientes[i] != null) {
+                // Solo se muestran los que tienen el estado en true.
+                if (clientes[i] != null && clientes[i].isEstado()) {
                     mensaje += clientes[i].toString() + "\n";
+                    activos++;
                 }
             }
-            JOptionPane.showMessageDialog(null, mensaje);
+            if (activos == 0) {
+                JOptionPane.showMessageDialog(null, "No hay clientes activos");
+            } else {
+                JOptionPane.showMessageDialog(null, mensaje);
+            }
         }
 
 
@@ -70,7 +78,7 @@ public class ClienteGestores {
                     String nuevaFechaNacimiento = JOptionPane.showInputDialog("Ingrese la nueva fecha de nacimiento del cliente:");
                     String nuevasNotas = JOptionPane.showInputDialog("Ingrese las nuevas notas del cliente:");
                     clientes[i] = new Cliente(idBusqueda, nuevoNombre, nuevoApellido, nuevoTelefono, nuevoCorreo,
-                            nuevaFechaNacimiento, clientes[i].getFechaRegistro(), nuevasNotas);
+                            nuevaFechaNacimiento, clientes[i].getFechaRegistro(), nuevasNotas, clientes[i].isEstado());
                     JOptionPane.showMessageDialog(null, "Cliente editado correctamente.");
                     return;
                 }
@@ -87,7 +95,7 @@ public class ClienteGestores {
                     String nuevaFechaNacimiento = JOptionPane.showInputDialog("Ingrese la nueva fecha de nacimiento del cliente:");
                     String nuevasNotas = JOptionPane.showInputDialog("Ingrese las nuevas notas del cliente:");
                     clientes[i] = new Cliente(clientes[i].getId(), nuevoNombre, nuevoApellido, nuevoTelefono, nuevoCorreo,
-                            nuevaFechaNacimiento, clientes[i].getFechaRegistro(), nuevasNotas);
+                            nuevaFechaNacimiento, clientes[i].getFechaRegistro(), nuevasNotas, clientes[i].isEstado());
                     JOptionPane.showMessageDialog(null, "Cliente editado correctamente.");
                     return;
                 }
@@ -104,8 +112,7 @@ public class ClienteGestores {
             int idBusqueda = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del cliente a eliminar:"));
             for (int i = 0; i < contador; i++) {
                 if (clientes[i].getId() == idBusqueda) {
-                    eliminarEnPosicion(i);
-                    JOptionPane.showMessageDialog(null, "Cliente eliminado correctamente.");
+                    cambiarEstado(i);
                     return;
                 }
             }
@@ -114,8 +121,7 @@ public class ClienteGestores {
             String nombreBusqueda = JOptionPane.showInputDialog("Ingrese el nombre del cliente a eliminar:");
             for (int i = 0; i < contador; i++) {
                 if (clientes[i].getNombre().contains(nombreBusqueda)) {
-                    eliminarEnPosicion(i);
-                    JOptionPane.showMessageDialog(null, "Cliente eliminado correctamente.");
+                    cambiarEstado(i);
                     return;
                 }
             }
@@ -124,19 +130,28 @@ public class ClienteGestores {
     }
 
 
+    // Eliminado logico: el cliente NO sale del arreglo, solo se le cambia el estado.
+    public static void cambiarEstado(int posicion) {
 
-    public static void eliminarEnPosicion(int posicion) {
+        String opciones[] = { "Activar", "Desactivar" };
+        int seleccion = JOptionPane.showOptionDialog(null,
+                "Cliente: " + clientes[posicion].getNombre() + " " + clientes[posicion].getApellido() + "\n"
+                + "Estado actual: " + (clientes[posicion].isEstado() ? "Activo" : "Inactivo") + "\n"
+                + "¿Que desea hacer?",
+                "Estado del Cliente",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
 
-        Cliente[] copia = new Cliente[clientes.length - 1];
-        int j = 0;
-        for (int i = 0; i < clientes.length; i++) {
-            if (i != posicion) {
-                copia[j] = clientes[i];
-                j++;
-            }
+        if (seleccion == JOptionPane.CLOSED_OPTION) {
+            return;
         }
-        clientes = copia;
-        contador--;
+
+        if (seleccion == 0) {
+            clientes[posicion].setEstado(true);
+            JOptionPane.showMessageDialog(null, "Cliente activado correctamente.");
+        } else {
+            clientes[posicion].setEstado(false);
+            JOptionPane.showMessageDialog(null, "Cliente desactivado correctamente.");
+        }
 
     }
 
