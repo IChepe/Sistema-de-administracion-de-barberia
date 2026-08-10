@@ -7,9 +7,9 @@ private String especialidad;
 private String fechaRegistro;
 private String horario;
 private Double comision;
-private Boolean estado;
+private String estado;
 
-    public Barbero(int id, Usuario idUsuario, String especialidad, String fechaRegistro, String horario, Double comision, Boolean estado) {
+    public Barbero(int id, Usuario idUsuario, String especialidad, String fechaRegistro, String horario, Double comision, String estado) {
         this.id = id;
         this.idUsuario = idUsuario;
         this.especialidad = especialidad;
@@ -70,11 +70,11 @@ private Boolean estado;
         this.comision = comision;
     }
 
-    public Boolean getEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(Boolean estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 
