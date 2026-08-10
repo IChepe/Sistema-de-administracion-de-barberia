@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import com.mycompany.sistemabarberia.Gestores.ClienteGestores;
 import com.mycompany.sistemabarberia.Gestores.ServicioGestores;
 import com.mycompany.sistemabarberia.Gestores.UsuarioGestores;
+import com.mycompany.sistemabarberia.Gestores.Barberogestores;
 
 /**
  *
@@ -165,7 +166,50 @@ public class SistemaBarberia {
 
                     break;
                 case 2:
-                   
+                   int opcionbarbero = 0;
+                    do {
+                        String opcionesbarbero[] = {
+                            "1. Agregar barbero",
+                            "2. Consultar barberos",
+                            "3. Editar barbero",
+                            "4. Eliminar barbero",
+                            "5. calcular comisión",
+                            "6. Consultar agenda de barbero",
+                            "7. Regresar al Menú Principal"
+                        };
+                        opcionbarbero = JOptionPane.showOptionDialog(null, "Seleccione una opción", "Gestión de Clientes",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcionesbarbero, opcionesbarbero[0]);
+
+                        if (opcionbarbero == JOptionPane.CLOSED_OPTION) {
+                            break;
+                        }
+
+                        switch (opcionbarbero) {
+                            case 0:
+                                Barberogestores.AgregarBarbero();
+                                break;
+                            case 1:
+                                Barberogestores.consultarbarbero();
+                                break;
+                            case 2:
+                                Barberogestores.editarbarbero();
+                                break;
+                            case 3:
+                                Barberogestores.eliminarbarbero();
+                                break;
+                            case 4:
+                                Barberogestores.calcularcomision();
+                                break;
+                            case 5:
+                                Barberogestores.consultaragenda();
+                                break;
+                            case 6:
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(null, "Opción inválida. Intente nuevamente.");
+                        }
+                    } while (opcionbarbero != 6);
+
                     break;
                 case 3:
                    

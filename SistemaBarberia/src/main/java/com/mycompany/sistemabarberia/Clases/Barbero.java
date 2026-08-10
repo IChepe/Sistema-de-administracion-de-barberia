@@ -2,24 +2,26 @@ package com.mycompany.sistemabarberia.Clases;
 
 public class Barbero {
 private int id;
-private Usuario idUsuario;
+private String nombre;
 private String especialidad;
 private String fechaRegistro;
 private String horario;
 private Double comision;
 private String estado;
+private boolean estadousuario;
 
-    public Barbero(int id, Usuario idUsuario, String especialidad, String fechaRegistro, String horario, Double comision, String estado) {
+    public Barbero() {
+    }
+
+    public Barbero(int id, String nombre, String especialidad, String fechaRegistro, String horario, Double comision, String estado, boolean estadousuario) {
         this.id = id;
-        this.idUsuario = idUsuario;
+        this.nombre = nombre;
         this.especialidad = especialidad;
         this.fechaRegistro = fechaRegistro;
         this.horario = horario;
         this.comision = comision;
         this.estado = estado;
-    }
-
-    public Barbero() {
+        this.estadousuario = estadousuario;
     }
 
     public int getId() {
@@ -30,12 +32,12 @@ private String estado;
         this.id = id;
     }
 
-    public Usuario getIdUsuario() {
-        return idUsuario;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setIdUsuario(Usuario idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getEspecialidad() {
@@ -78,9 +80,27 @@ private String estado;
         this.estado = estado;
     }
 
+    public boolean isEstadousuario() {
+        return estadousuario;
+    }
+
+    public void setEstadousuario(boolean estadousuario) {
+        this.estadousuario = estadousuario;
+    }
+
+
+
     @Override
     public String toString() {
-        return "Barbero{" + "id=" + id + ", idUsuario=" + idUsuario + ", especialidad=" + especialidad + ", fechaRegistro=" + fechaRegistro + ", horario=" + horario + ", comision=" + comision + ", estado=" + estado + '}';
+        return "Barbero" 
+             + "\n\nID: " + id
+             + "\nNombre: " + nombre 
+             + "\nEspecialidad: " + especialidad 
+             + "\nFecha de registro del barbero: " + fechaRegistro 
+             + "\nHorario del barbero: " + horario 
+             + "\nComisión del barbero: " + comision 
+             + "\nEstado: " + estado 
+             + "\nEstado del usuario: " + (estadousuario ? "Activo" : "Inactivo");
     }
 
     
