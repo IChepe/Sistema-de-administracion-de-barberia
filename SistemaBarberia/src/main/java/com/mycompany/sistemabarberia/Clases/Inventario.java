@@ -1,9 +1,7 @@
 package com.mycompany.sistemabarberia.Clases;
 
-import com.mycompany.sistemabarberia.Enumeradores.Categoria;
-
 public class Inventario {
-   private int id;
+    private int id;
     private String nombre;
     private String descripcion;
     private Categoria categorias;
@@ -13,8 +11,9 @@ public class Inventario {
     private double precioVenta;
     private String unidadMedida;
 
-    // Constructor
-    public Inventario(int id, String nombre, String descripcion, Categoria categorias, int stock, int stockMinimo, double precioCompra, double precioVenta, String unidadMedida) {
+    
+    public Inventario(int id, String nombre, String descripcion, Categoria categorias,
+                      int stock, int stockMinimo, double precioCompra, double precioVenta, String unidadMedida) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -26,7 +25,7 @@ public class Inventario {
         this.unidadMedida = unidadMedida;
     }
 
-    // Métodos de acceso (getters y setters)
+    
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -54,29 +53,42 @@ public class Inventario {
     public String getUnidadMedida() { return unidadMedida; }
     public void setUnidadMedida(String unidadMedida) { this.unidadMedida = unidadMedida; }
 
-    // Métodos funcionales
-    public void agregarStock(int cantidad) {
-        this.stock += cantidad;
+   
+    public void crear() {
+        System.out.println("Producto creado: " + nombre);
     }
 
-    public void reducirStock(int cantidad) {
-        if (cantidad <= this.stock) {
-            this.stock -= cantidad;
+    public void consultar() {
+        System.out.println("Consulta de producto: " + this);
+    }
+
+    public void actualizar(String nuevoNombre, String nuevaDescripcion, double nuevoPrecioVenta) {
+        this.nombre = nuevoNombre;
+        this.descripcion = nuevaDescripcion;
+        this.precioVenta = nuevoPrecioVenta;
+        System.out.println("Producto actualizado: " + nombre);
+    }
+
+    public void eliminar() {
+        System.out.println("Producto eliminado: " + nombre);
+    }
+
+    public void actualizarStock(int nuevoStock) {
+        this.stock = nuevoStock;
+        System.out.println("Stock actualizado: " + stock);
+    }
+
+    public boolean verificarStockMinimo() {
+        return stock <= stockMinimo;
+    }
+
+    public void descontarStock(int cantidad) {
+        if (cantidad <= stock) {
+            stock -= cantidad;
+            System.out.println("Stock descontado. Nuevo stock: " + stock);
         } else {
-            System.out.println("Error: Stock insuficiente para reducir " + cantidad);
+            System.out.println("Error: cantidad a descontar mayor que el stock disponible.");
         }
-    }
-
-    public boolean necesitaReabastecer() {
-        return this.stock <= this.stockMinimo;
-    }
-
-    public double calcularMargen() {
-        return this.precioVenta - this.precioCompra;
-    }
-
-    public double calcularValorInventario() {
-        return this.stock * this.precioCompra;
     }
 
     @Override
@@ -85,7 +97,7 @@ public class Inventario {
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", descripcion='" + descripcion + '\'' +
-                ", categorias=" + categorias +
+                ", categoria=" + (categorias != null ? categorias.getNombre() : "Sin categoría") +
                 ", stock=" + stock +
                 ", stockMinimo=" + stockMinimo +
                 ", precioCompra=" + precioCompra +
@@ -93,17 +105,4 @@ public class Inventario {
                 ", unidadMedida='" + unidadMedida + '\'' +
                 '}';
     }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
 }
