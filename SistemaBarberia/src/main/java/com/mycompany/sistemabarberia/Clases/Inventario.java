@@ -3,26 +3,33 @@ package com.mycompany.sistemabarberia.Clases;
 import com.mycompany.sistemabarberia.Enumeradores.Categoria;
 
 public class Inventario {
+
     private int id;
     private String nombre;
     private String descripcion;
-    private Categoria categorias;
+    private Categoria categoria;
     private int stock;
-    private int stokMinimo;
+    private int stockMinimo;
     private double precioCompra;
     private double precioVenta;
-    private String UnidadMedida;
+    private String unidadMedida;
+    private boolean estado;
 
-    public Inventario(int id, String nombre, String descripcion, Categoria categorias, int stock, int stokMinimo, double precioCompra, double precioVenta, String UnidadMedida) {
+    public Inventario() {
+        this.estado = true;
+    }
+
+    public Inventario(int id, String nombre, String descripcion, Categoria categoria, int stock, int stockMinimo, double precioCompra, double precioVenta, String unidadMedida, boolean estado) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.categorias = categorias;
+        this.categoria = categoria;
         this.stock = stock;
-        this.stokMinimo = stokMinimo;
+        this.stockMinimo = stockMinimo;
         this.precioCompra = precioCompra;
         this.precioVenta = precioVenta;
-        this.UnidadMedida = UnidadMedida;
+        this.unidadMedida = unidadMedida;
+        this.estado = estado;
     }
 
     public int getId() {
@@ -49,12 +56,12 @@ public class Inventario {
         this.descripcion = descripcion;
     }
 
-    public Categoria getCategorias() {
-        return categorias;
+    public Categoria getCategoria() {
+        return categoria;
     }
 
-    public void setCategorias(Categoria categorias) {
-        this.categorias = categorias;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
     public int getStock() {
@@ -65,12 +72,12 @@ public class Inventario {
         this.stock = stock;
     }
 
-    public int getStokMinimo() {
-        return stokMinimo;
+    public int getStockMinimo() {
+        return stockMinimo;
     }
 
-    public void setStokMinimo(int stokMinimo) {
-        this.stokMinimo = stokMinimo;
+    public void setStockMinimo(int stockMinimo) {
+        this.stockMinimo = stockMinimo;
     }
 
     public double getPrecioCompra() {
@@ -90,28 +97,33 @@ public class Inventario {
     }
 
     public String getUnidadMedida() {
-        return UnidadMedida;
+        return unidadMedida;
     }
 
-    public void setUnidadMedida(String UnidadMedida) {
-        this.UnidadMedida = UnidadMedida;
+    public void setUnidadMedida(String unidadMedida) {
+        this.unidadMedida = unidadMedida;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
     }
 
     @Override
     public String toString() {
-        return "Inventario{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", categorias=" + categorias + ", stock=" + stock + ", stokMinimo=" + stokMinimo + ", precioCompra=" + precioCompra + ", precioVenta=" + precioVenta + ", UnidadMedida=" + UnidadMedida + '}';
+        return "----- Producto -----" + "\n"
+             + "ID: " + id + "\n"
+             + "Nombre: " + nombre + "\n"
+             + "Descripcion: " + descripcion + "\n"
+             + "Categoria: " + categoria + "\n"
+             + "Stock: " + stock + " " + unidadMedida + "\n"
+             + "Stock minimo: " + stockMinimo + "\n"
+             + "Precio de compra: " + precioCompra + "\n"
+             + "Precio de venta: " + precioVenta + "\n"
+             + "Estado: " + (estado ? "Activo" : "Inactivo") + "\n";
     }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
 }

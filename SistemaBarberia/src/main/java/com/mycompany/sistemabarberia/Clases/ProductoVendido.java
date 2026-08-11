@@ -1,6 +1,7 @@
 package com.mycompany.sistemabarberia.Clases;
 
 public class ProductoVendido {
+
     private int id;
     private Inventario inventario;
     private Venta venta;
@@ -8,7 +9,9 @@ public class ProductoVendido {
     private double precioUnitario;
     private double subtotal;
 
-   
+    public ProductoVendido() {
+    }
+
     public ProductoVendido(int id, Inventario inventario, Venta venta, int cantidad, double precioUnitario) {
         this.id = id;
         this.inventario = inventario;
@@ -18,7 +21,6 @@ public class ProductoVendido {
         this.subtotal = cantidad * precioUnitario;
     }
 
-   
     public int getId() {
         return id;
     }
@@ -49,7 +51,7 @@ public class ProductoVendido {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
-        this.subtotal = cantidad * precioUnitario; // recalcular subtotal
+        this.subtotal = cantidad * precioUnitario;
     }
 
     public double getPrecioUnitario() {
@@ -58,22 +60,26 @@ public class ProductoVendido {
 
     public void setPrecioUnitario(double precioUnitario) {
         this.precioUnitario = precioUnitario;
-        this.subtotal = cantidad * precioUnitario; // recalcular subtotal
+        this.subtotal = cantidad * precioUnitario;
     }
 
     public double getSubtotal() {
         return subtotal;
     }
 
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+
     @Override
     public String toString() {
-        return "ProductoVendido{" +
-               "id=" + id +
-               ", inventario=" + inventario.getNombre() +
-               ", venta=" + venta.(getIdVenta) +
-               ", cantidad=" + cantidad +
-               ", precioUnitario=" + precioUnitario +
-               ", subtotal=" + subtotal +
-               '}';
+        return "----- Producto Vendido -----" + "\n"
+             + "ID: " + id + "\n"
+             + "Producto: " + (inventario != null ? inventario.getNombre() : "Sin asignar") + "\n"
+             + "Venta N°: " + (venta != null ? venta.getId() : 0) + "\n"
+             + "Cantidad: " + cantidad + "\n"
+             + "Precio unitario: " + precioUnitario + "\n"
+             + "Subtotal: " + subtotal + "\n";
     }
+
 }

@@ -60,64 +60,48 @@ public class ServicioGestores {
 
     }
 
-    public static void editarServicio() {
-       String metodos[] = { "Por ID", "Por Nombre" };
-        int metodoSeleccionado = JOptionPane.showOptionDialog(null, "Seleccione el metodo de busqueda:", "Buscar Servicio",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, metodos, metodos[0]);
-        if (metodoSeleccionado == 0) {
-            int idBusqueda = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del servicio a editar:"));
-            for (int i = 0; i < contador; i++) {
-                if (servicios[i].getIdServicio() == idBusqueda) {
-                    String nuevoNombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre del servicio:");
-                    double nuevoPrecio = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo precio del servicio:"));
-                    int nuevaDuracion = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la nueva duración del servicio:"));
-                    String nuevaCategoria = JOptionPane.showInputDialog("Ingrese la nueva categoría del servicio:");
-                    servicios[i] = new Servicio(idBusqueda, nuevoNombre, nuevoPrecio, nuevaDuracion, nuevaCategoria, servicios[i].isEstado());
-                    JOptionPane.showMessageDialog(null, "Servicio editado correctamente.");
-                    return;
-                }
-            }
-            JOptionPane.showMessageDialog(null, "No se encontro un servicio con el ID especificado.");
-        } else if (metodoSeleccionado == 1) {
-            String nombreBusqueda = JOptionPane.showInputDialog("Ingrese el nombre del servicio a editar:");
-            for (int i = 0; i < contador; i++) {
-                if (servicios[i].getNombreser().contains(nombreBusqueda)) {
-                    String nuevoNombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre del servicio:");
-                    double nuevoPrecio = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo precio del servicio:"));
-                    int nuevaDuracion = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la nueva duración del servicio:"));
-                    String nuevaCategoria = JOptionPane.showInputDialog("Ingrese la nueva categoría del servicio:");
-                    servicios[i] = new Servicio(servicios[i].getIdServicio(), nuevoNombre, nuevoPrecio, nuevaDuracion, nuevaCategoria, servicios[i].isEstado());
-                    JOptionPane.showMessageDialog(null, "Servicio editado correctamente.");
-                    return;
-                }
-            }
-            JOptionPane.showMessageDialog(null, "No se encontro un servicio con el nombre especificado.");
+    // Recorre el arreglo y muestra todos los servicios registrados para escoger uno,
+    // asi no hay que aprenderse los ID. Devuelve la posicion, o -1 si se cierra.
+    public static int seleccionarServicio(String titulo) {
+
+        if (contador == 0) {
+            JOptionPane.showMessageDialog(null, "No hay servicios registrados");
+            return -1;
         }
+
+        String opciones[] = new String[contador];
+        for (int i = 0; i < contador; i++) {
+            opciones[i] = servicios[i].getIdServicio() + " - " + servicios[i].getNombreser()
+                    + " (" + (servicios[i].isEstado() ? "Activo" : "Inactivo") + ")";
+        }
+
+        return JOptionPane.showOptionDialog(null, "Seleccione el servicio:", titulo,
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+    }
+
+    public static void editarServicio() {
+
+        int i = seleccionarServicio("Editar Servicio");
+        if (i == JOptionPane.CLOSED_OPTION) {
+            return;
+        }
+
+        String nuevoNombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre del servicio:");
+        double nuevoPrecio = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo precio del servicio:"));
+        int nuevaDuracion = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la nueva duración del servicio:"));
+        String nuevaCategoria = JOptionPane.showInputDialog("Ingrese la nueva categoría del servicio:");
+        servicios[i] = new Servicio(servicios[i].getIdServicio(), nuevoNombre, nuevoPrecio, nuevaDuracion, nuevaCategoria, servicios[i].isEstado());
+        JOptionPane.showMessageDialog(null, "Servicio editado correctamente.");
     }
 
     public static void eliminarServicio() {
-        String metodos[] = { "Por ID", "Por Nombre" };
-        int metodoSeleccionado = JOptionPane.showOptionDialog(null, "Seleccione el metodo de busqueda:", "Buscar Servicio",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, metodos, metodos[0]);
-        if (metodoSeleccionado == 0) {
-            int idBusqueda = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del servicio a eliminar:"));
-            for (int i = 0; i < contador; i++) {
-                if (servicios[i].getIdServicio() == idBusqueda) {
-                    cambiarEstado(i);
-                    return;
-                }
-            }
-            JOptionPane.showMessageDialog(null, "No se encontro un servicio con el ID especificado.");
-        } else if (metodoSeleccionado == 1) {
-            String nombreBusqueda = JOptionPane.showInputDialog("Ingrese el nombre del servicio a eliminar:");
-            for (int i = 0; i < contador; i++) {
-                if (servicios[i].getNombreser().contains(nombreBusqueda)) {
-                    cambiarEstado(i);
-                    return;
-                }
-            }
-            JOptionPane.showMessageDialog(null, "No se encontro un servicio con el nombre especificado.");
+
+        int i = seleccionarServicio("Eliminar Servicio");
+        if (i == JOptionPane.CLOSED_OPTION) {
+            return;
         }
+
+        cambiarEstado(i);
     }
 
 

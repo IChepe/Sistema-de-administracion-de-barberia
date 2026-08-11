@@ -69,72 +69,52 @@ public class UsuarioGestores {
 
     }
 
-    public static void editarUsuario() {
-        String metodos[] = { "Por ID", "Por Nombre" };
-        int metodoSeleccionado = JOptionPane.showOptionDialog(null, "Seleccione el metodo de busqueda:", "Buscar Usuario",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, metodos, metodos[0]);
-        if (metodoSeleccionado == 0) {
-            int idBusqueda = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del usuario a editar:"));
-            for (int i = 0; i < contador; i++) {
-                if (usuarios[i].getId() == idBusqueda) {
-                    String nuevoNombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre de usuario:");
-                    String nuevoApellido = JOptionPane.showInputDialog("Ingrese el nuevo apellido del usuario:");
-                    String nuevoEmail = JOptionPane.showInputDialog("Ingrese el nuevo email del usuario:");
-                    String nuevaPassword = JOptionPane.showInputDialog("Ingrese la nueva contraseña del usuario:");
-                    String nuevoRol = JOptionPane.showInputDialog("Ingrese el nuevo rol del usuario:");
-                    boolean nuevoEstado = JOptionPane.showConfirmDialog(null, "¿El usuario esta activo?", "Estado del usuario",
-                            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
-                    usuarios[i] = new Usuario(idBusqueda, nuevoNombre, nuevoApellido, nuevoEmail, nuevaPassword,
-                            nuevoRol, nuevoEstado, usuarios[i].getFechaRegistro());
-                    JOptionPane.showMessageDialog(null, "Usuario editado correctamente.");
-                    return;
-                }
-            }
-            JOptionPane.showMessageDialog(null, "No se encontro un usuario con el ID especificado.");
-        } else if (metodoSeleccionado == 1) {
-            String nombreBusqueda = JOptionPane.showInputDialog("Ingrese el nombre del usuario a editar:");
-            for (int i = 0; i < contador; i++) {
-                if (usuarios[i].getNombre().contains(nombreBusqueda)) {
-                    String nuevoNombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre de usuario:");
-                    String nuevoApellido = JOptionPane.showInputDialog("Ingrese el nuevo apellido del usuario:");
-                    String nuevoEmail = JOptionPane.showInputDialog("Ingrese el nuevo email del usuario:");
-                    String nuevaPassword = JOptionPane.showInputDialog("Ingrese la nueva contraseña del usuario:");
-                    String nuevoRol = JOptionPane.showInputDialog("Ingrese el nuevo rol del usuario:");
-                    boolean nuevoEstado = JOptionPane.showConfirmDialog(null, "¿El usuario esta activo?", "Estado del usuario",
-                            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
-                    usuarios[i] = new Usuario(usuarios[i].getId(), nuevoNombre, nuevoApellido, nuevoEmail, nuevaPassword,
-                            nuevoRol, nuevoEstado, usuarios[i].getFechaRegistro());
-                    JOptionPane.showMessageDialog(null, "Usuario editado correctamente.");
-                    return;
-                }
-            }
-            JOptionPane.showMessageDialog(null, "No se encontro un usuario con el nombre especificado.");
+    // Recorre el arreglo y muestra todos los usuarios registrados para escoger uno,
+    // asi no hay que aprenderse los ID. Devuelve la posicion, o -1 si se cierra.
+    public static int seleccionarUsuario(String titulo) {
+
+        if (contador == 0) {
+            JOptionPane.showMessageDialog(null, "No hay usuarios registrados");
+            return -1;
         }
+
+        String opciones[] = new String[contador];
+        for (int i = 0; i < contador; i++) {
+            opciones[i] = usuarios[i].getId() + " - " + usuarios[i].getNombre() + " " + usuarios[i].getApellido()
+                    + " (" + (usuarios[i].isEstado() ? "Activo" : "Inactivo") + ")";
+        }
+
+        return JOptionPane.showOptionDialog(null, "Seleccione el usuario:", titulo,
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+    }
+
+    public static void editarUsuario() {
+
+        int i = seleccionarUsuario("Editar Usuario");
+        if (i == JOptionPane.CLOSED_OPTION) {
+            return;
+        }
+
+        String nuevoNombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre de usuario:");
+        String nuevoApellido = JOptionPane.showInputDialog("Ingrese el nuevo apellido del usuario:");
+        String nuevoEmail = JOptionPane.showInputDialog("Ingrese el nuevo email del usuario:");
+        String nuevaPassword = JOptionPane.showInputDialog("Ingrese la nueva contraseña del usuario:");
+        String nuevoRol = JOptionPane.showInputDialog("Ingrese el nuevo rol del usuario:");
+        boolean nuevoEstado = JOptionPane.showConfirmDialog(null, "¿El usuario esta activo?", "Estado del usuario",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+        usuarios[i] = new Usuario(usuarios[i].getId(), nuevoNombre, nuevoApellido, nuevoEmail, nuevaPassword,
+                nuevoRol, nuevoEstado, usuarios[i].getFechaRegistro());
+        JOptionPane.showMessageDialog(null, "Usuario editado correctamente.");
     }
 
     public static void eliminarUsuario() {
-        String metodos[] = { "Por ID", "Por Nombre" };
-        int metodoSeleccionado = JOptionPane.showOptionDialog(null, "Seleccione el metodo de busqueda:", "Buscar Usuario",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, metodos, metodos[0]);
-        if (metodoSeleccionado == 0) {
-            int idBusqueda = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del usuario a eliminar:"));
-            for (int i = 0; i < contador; i++) {
-                if (usuarios[i].getId() == idBusqueda) {
-                    cambiarEstado(i);
-                    return;
-                }
-            }
-            JOptionPane.showMessageDialog(null, "No se encontro un usuario con el ID especificado.");
-        } else if (metodoSeleccionado == 1) {
-            String nombreBusqueda = JOptionPane.showInputDialog("Ingrese el nombre del usuario a eliminar:");
-            for (int i = 0; i < contador; i++) {
-                if (usuarios[i].getNombre().contains(nombreBusqueda)) {
-                    cambiarEstado(i);
-                    return;
-                }
-            }
-            JOptionPane.showMessageDialog(null, "No se encontro un usuario con el nombre especificado.");
+
+        int i = seleccionarUsuario("Eliminar Usuario");
+        if (i == JOptionPane.CLOSED_OPTION) {
+            return;
         }
+
+        cambiarEstado(i);
     }
 
 

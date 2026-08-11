@@ -24,8 +24,9 @@ public class Barberogestores {
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre del barbero: ");
         String especialidad = JOptionPane.showInputDialog("Ingrese la especialidad del barbero: ");
         String fechaRegistro = JOptionPane.showInputDialog("Ingrese la fecha en la que se registro al barbero: ");
-        String horario = JOptionPane.showInputDialog("Ingrese el horario del barberp:");
-        Double comision = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el porcentaje de comisión: "));
+        boolean dias[] = marcardias();
+        boolean bloques[] = marcarbloques();
+        Double comision = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el porcentaje de comisión\n(numero entero, ejemplo: 20 para un 20%): "));
         int Opcionestado = JOptionPane.showConfirmDialog(null, "El barbero esta disponible?", "Estado de barbero"
                 ,JOptionPane.YES_NO_OPTION);
        String estado;
@@ -39,8 +40,45 @@ public class Barberogestores {
            ingresado[i] = barbero[i];
        }
        barbero = ingresado;
-       barbero[COntador -1] = new Barbero(id,nombre, especialidad, fechaRegistro, horario, comision, estado, true);
-       
+       barbero[COntador -1] = new Barbero(id,nombre, especialidad, fechaRegistro, dias, bloques, comision, estado, true);
+
+    }
+
+    // Recorre el catalogo de dias y pregunta uno por uno cuales trabaja.
+    // Devuelve un arreglo de marcas: si trabaja el lunes, marcas[0] queda en true.
+    public static boolean[] marcardias() {
+
+        boolean marcas[] = new boolean[Barbero.DIAS.length];
+
+        for (int i = 0; i < Barbero.DIAS.length; i++) {
+            int respuesta = JOptionPane.showConfirmDialog(null,
+                    "¿El barbero trabaja el " + Barbero.DIAS[i] + "?",
+                    "Dias que trabaja (" + (i + 1) + " de " + Barbero.DIAS.length + ")",
+                    JOptionPane.YES_NO_OPTION);
+            if (respuesta == JOptionPane.YES_OPTION) {
+                marcas[i] = true;
+            }
+        }
+
+        return marcas;
+    }
+
+    // Lo mismo pero con los bloques de hora: si atiende de 06:00 a 07:00, marcas[0] queda en true.
+    public static boolean[] marcarbloques() {
+
+        boolean marcas[] = new boolean[Barbero.BLOQUES.length];
+
+        for (int i = 0; i < Barbero.BLOQUES.length; i++) {
+            int respuesta = JOptionPane.showConfirmDialog(null,
+                    "¿El barbero atiende de " + Barbero.BLOQUES[i] + "?",
+                    "Bloques de hora (" + (i + 1) + " de " + Barbero.BLOQUES.length + ")",
+                    JOptionPane.YES_NO_OPTION);
+            if (respuesta == JOptionPane.YES_OPTION) {
+                marcas[i] = true;
+            }
+        }
+
+        return marcas;
     }
      public static void consultarbarbero() {
         if (COntador == 0) {
@@ -62,20 +100,38 @@ public class Barberogestores {
         }
     }
 
+    // Recorre el arreglo y muestra todos los barberos registrados para escoger uno,
+    // asi no hay que aprenderse los ID. Devuelve la posicion, o -1 si se cierra.
+    public static int seleccionarbarbero(String titulo) {
+
+        if (COntador == 0) {
+            JOptionPane.showMessageDialog(null, "No hay barberos registrados");
+            return -1;
+        }
+
+        String opciones[] = new String[COntador];
+        for (int i = 0; i < COntador; i++) {
+            opciones[i] = barbero[i].getId() + " - " + barbero[i].getNombre()
+                    + " (" + (barbero[i].isEstadousuario() ? "Activo" : "Inactivo") + ")";
+        }
+
+        return JOptionPane.showOptionDialog(null, "Seleccione el barbero:", titulo,
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+    }
+
     public static void editarbarbero() {
-       String metodos[] = { "Por ID", "Por nombre" };
-        int metodoseleccionado = JOptionPane.showOptionDialog(null, "Seleccione el metodo de busqueda:", "Buscar barbero",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, metodos, metodos[0]);
-        if (metodoseleccionado == 0) {
-            int idBUsqueda = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del barbero a editar:"));
-            for (int i = 0; i < COntador; i++) {
-                if (barbero[i].getId() == idBUsqueda) {
-                    int nuevoid = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el nuevo ID del barbero:"));
+
+        int i = seleccionarbarbero("Editar barbero");
+        if (i == JOptionPane.CLOSED_OPTION) {
+            return;
+        }
+
                     String nuevonombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre del barbero: ");
                     String nuevaespecialidad = JOptionPane.showInputDialog("Ingrese la nueva especialidad:");
                     String nuevafechaRegistro = JOptionPane.showInputDialog("Ingrese la nueva fecha de registro del barbero:");
-                    String nuevohorario = JOptionPane.showInputDialog("Ingrese el nuevo horario del barbero:");
-                    Double nuevacomision = Double.parseDouble(JOptionPane.showInputDialog("Ingrese la nueva comisión: "));
+                    boolean nuevosdias[] = marcardias();
+                    boolean nuevosbloques[] = marcarbloques();
+                    Double nuevacomision = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo porcentaje de comisión\n(numero entero, ejemplo: 20 para un 20%): "));
                     int Opcionestado = JOptionPane.showConfirmDialog(null, "El barbero esta disponible?", "Estado de barbero"
                 ,JOptionPane.YES_NO_OPTION);
        String nuevoestado;
@@ -84,93 +140,48 @@ public class Barberogestores {
        }else{
            nuevoestado = "No disponible";
        }
-                    barbero[i] = new Barbero(nuevoid, nuevonombre, nuevaespecialidad, nuevafechaRegistro, nuevohorario,
-                            nuevacomision,nuevoestado, true);
+                    barbero[i] = new Barbero(barbero[i].getId(), nuevonombre, nuevaespecialidad, nuevafechaRegistro, nuevosdias, nuevosbloques,
+                            nuevacomision, nuevoestado, barbero[i].isEstadousuario());
                     JOptionPane.showMessageDialog(null, "Barbero editado correctamente.");
-                    return;
-            }
-        }
-        JOptionPane.showMessageDialog(null, "No se encontro un barbero con eee ID.");
-        
-        }else if(metodoseleccionado == 1){
-            String nombrebusqueda = JOptionPane.showInputDialog("Ingrese el nombre del barbero a editar:");
-            for (int i = 0; i < COntador; i++) {
-                if (barbero[i].getNombre().contains(nombrebusqueda)) {
-                    int nuevoid = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el nuevo ID del barbero:"));
-                    String nuevonombre = JOptionPane.showInputDialog("Ingrese el nuevo nombre del barbero: ");
-                    String nuevaespecialidad = JOptionPane.showInputDialog("Ingrese la nueva especialidad:");
-                    String nuevafechaRegistro = JOptionPane.showInputDialog("Ingrese la nueva fecha de registro del barbero:");
-                    String nuevohorario = JOptionPane.showInputDialog("Ingrese el nuevo horario del barbero:");
-                    Double nuevacomision = Double.parseDouble(JOptionPane.showInputDialog("Ingrese la nueva comisión: "));
-                    int Opcionestado = JOptionPane.showConfirmDialog(null, "El barbero esta disponible?", "Estado de barbero"
-                ,JOptionPane.YES_NO_OPTION);
-       String nuevoestado;
-       if(Opcionestado == JOptionPane.YES_OPTION){
-           nuevoestado = "Disponible";
-       }else{
-           nuevoestado = "No disponible";
-            }
-                    barbero[i] = new Barbero(nuevoid, nuevonombre, nuevaespecialidad, nuevafechaRegistro, nuevohorario, nuevacomision, nuevoestado, true);
-                    JOptionPane.showMessageDialog(null, "Barbero editado correctamente.");
-                    return;
-            }
-            }
-            JOptionPane.showMessageDialog(null, "No se encontro un barbero con ese nombre.");
-        }
     }
     public static void eliminarbarbero() {
-        String metodos[] = { "Por ID", "Por Nombre" };
-        int Metodoseleccionado = JOptionPane.showOptionDialog(null, "Seleccione el metodo de busqueda:", "Buscar barbero",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, metodos, metodos[0]);
-        if (Metodoseleccionado == 0) {
-            int IDbusqueda = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del barbero a eliminar:"));
-            for (int i = 0; i < COntador; i++) {
-                if (barbero[i].getId() == IDbusqueda) {
-                    cambiarestado(i);
-                    return;
-                }
-            }
-            JOptionPane.showMessageDialog(null, "No se encontro un barbero con ee ID.");
-        } else if (Metodoseleccionado == 1) {
-            String Nombrebusqueda = JOptionPane.showInputDialog("Ingrese el nombre del barbero a eliminar:");
-            for (int i = 0; i < COntador; i++) {
-                if (barbero[i].getNombre().contains(Nombrebusqueda)) {
-                    cambiarestado(i);
-                    return;
-                }
-            }
-            JOptionPane.showMessageDialog(null, "No se encontro un barbero con ee nombre especificado.");
+
+        int i = seleccionarbarbero("Eliminar barbero");
+        if (i == JOptionPane.CLOSED_OPTION) {
+            return;
         }
+
+        cambiarestado(i);
     }
     public static void calcularcomision() {
-        int IDbusqueda = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del barbero: "));
-        for (int i = 0; i < COntador; i++){
-            if (barbero[i].getId() == IDbusqueda){
+
+        int i = seleccionarbarbero("Calcular comision");
+        if (i == JOptionPane.CLOSED_OPTION) {
+            return;
+        }
+
                 double precioservicio = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el precio del servicio realizado: "));
                 double ganancia = (precioservicio * barbero[i].getComision())/ 100;
-                
+
                 JOptionPane.showMessageDialog(null, "Cálculo de comisión: "
-                        +"\n\n Barbero ID: "+ barbero[i].getId()
+                        +"\n\n Barbero: "+ barbero[i].getId() + " - " + barbero[i].getNombre()
                         +"\n Comisión del barbero: "+ barbero[i].getComision()+" %"
                         +"\n Total ganado: "+ ganancia);
-                return;
-            }
-        }
-        JOptionPane.showMessageDialog(null, "No se encontro un barberoc on ese ID");
     }
     public static void consultaragenda(){
-        int IDBusqueda = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del barbero: "));
-        for (int i = 0; i < COntador; i++){
-            if (barbero[i].getId() == IDBusqueda){
-                JOptionPane.showMessageDialog(null, "Agenda del barbero"
-                        +"\n\n ID: "+ barbero[i].getId() 
-                        +"\n Especialidad: "+ barbero[i].getEspecialidad()
-                        +"\n Horario: "+ barbero[i].getHorario()
-                        +"\n Estado actual: "+ barbero[i].getEstado() );
-                return;
-            }
+
+        int i = seleccionarbarbero("Consultar agenda");
+        if (i == JOptionPane.CLOSED_OPTION) {
+            return;
         }
-        JOptionPane.showMessageDialog(null, "No se encontro un barbero con ese ID");
+
+                JOptionPane.showMessageDialog(null, "Agenda del barbero"
+                        +"\n\n ID: "+ barbero[i].getId()
+                        +"\n Nombre: "+ barbero[i].getNombre()
+                        +"\n Especialidad: "+ barbero[i].getEspecialidad()
+                        +"\n Dias que trabaja: "+ barbero[i].getDiasTexto()
+                        +"\n Horario: "+ barbero[i].getBloquesTexto()
+                        +"\n Estado actual: "+ barbero[i].getEstado() );
     }
         public static void cambiarestado(int posicion) {
 

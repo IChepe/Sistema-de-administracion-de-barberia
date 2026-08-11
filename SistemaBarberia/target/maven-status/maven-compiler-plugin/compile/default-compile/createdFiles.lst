@@ -1,0 +1,17 @@
+com\mycompany\sistemabarberia\Clases\Reporte.class
+com\mycompany\sistemabarberia\Gestores\ClienteGestores.class
+com\mycompany\sistemabarberia\Clases\Venta.class
+com\mycompany\sistemabarberia\Gestores\ServicioGestores.class
+com\mycompany\sistemabarberia\Gestores\UsuarioGestores.class
+com\mycompany\sistemabarberia\Gestores\VentaGestores.class
+com\mycompany\sistemabarberia\Clases\Usuario.class
+com\mycompany\sistemabarberia\Enumeradores\Categoria.class
+com\mycompany\sistemabarberia\Clases\Servicio.class
+com\mycompany\sistemabarberia\Clases\ProductoVendido.class
+com\mycompany\sistemabarberia\Clases\Citas.class
+com\mycompany\sistemabarberia\Clases\Cliente.class
+com\mycompany\sistemabarberia\Enumeradores\Tipo.class
+com\mycompany\sistemabarberia\Gestores\Barberogestores.class
+com\mycompany\sistemabarberia\SistemaBarberia.class
+com\mycompany\sistemabarberia\Clases\Barbero.class
+com\mycompany\sistemabarberia\Clases\Inventario.class

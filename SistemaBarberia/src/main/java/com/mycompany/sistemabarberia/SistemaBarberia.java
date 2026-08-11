@@ -6,9 +6,13 @@ package com.mycompany.sistemabarberia;
 
 import javax.swing.JOptionPane;
 
+import com.mycompany.sistemabarberia.Gestores.CitasGestores;
 import com.mycompany.sistemabarberia.Gestores.ClienteGestores;
+import com.mycompany.sistemabarberia.Gestores.GestorProductosVendidos;
+import com.mycompany.sistemabarberia.Gestores.InventarioGestores;
 import com.mycompany.sistemabarberia.Gestores.ServicioGestores;
 import com.mycompany.sistemabarberia.Gestores.UsuarioGestores;
+import com.mycompany.sistemabarberia.Gestores.VentaGestores;
 import com.mycompany.sistemabarberia.Gestores.Barberogestores;
 
 /**
@@ -212,12 +216,128 @@ public class SistemaBarberia {
 
                     break;
                 case 3:
-                   
-                    break;    
+                    int opcionCita = 0;
+                    do {
+                        String opcionesCita[] = {
+                            "1. Agendar Cita",
+                            "2. Consultar Citas",
+                            "3. Anular Cita",
+                            "4. Regresar al Menú Principal"
+                        };
+                        opcionCita = JOptionPane.showOptionDialog(null, "Seleccione una opción", "Gestión de Citas",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcionesCita, opcionesCita[0]);
+
+                        if (opcionCita == JOptionPane.CLOSED_OPTION) {
+                            break;
+                        }
+
+                        switch (opcionCita) {
+                            case 0:
+                                CitasGestores.agendarCita();
+                                break;
+                            case 1:
+                                CitasGestores.consultarCitas();
+                                break;
+                            case 2:
+                                CitasGestores.anularCita();
+                                break;
+                            case 3:
+                                // Regresar al menú principal
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(null, "Opción inválida. Intente nuevamente.");
+                        }
+                    } while (opcionCita != 3);
+
+                    break;
                 case 4:
+                    int opcionVenta = 0;
+                    do {
+                        String opcionesVenta[] = {
+                            "1. Crear Venta",
+                            "2. Consultar Ventas",
+                            "3. Anular Venta",
+                            "4. Generar Factura",
+                            "5. Regresar al Menú Principal"
+                        };
+                        opcionVenta = JOptionPane.showOptionDialog(null, "Seleccione una opción", "Gestión de Ventas",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcionesVenta, opcionesVenta[0]);
+
+                        if (opcionVenta == JOptionPane.CLOSED_OPTION) {
+                            break;
+                        }
+
+                        switch (opcionVenta) {
+                            case 0:
+                                VentaGestores.crearVenta();
+                                break;
+                            case 1:
+                                VentaGestores.consultarVentas();
+                                break;
+                            case 2:
+                                VentaGestores.anularVenta();
+                                break;
+                            case 3:
+                                VentaGestores.generarFactura();
+                                break;
+                            case 4:
+                                // Regresar al menú principal
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(null, "Opción inválida. Intente nuevamente.");
+                        }
+                    } while (opcionVenta != 4);
 
                     break;
                 case 5:
+                    int opcionInventario = 0;
+                    do {
+                        String opcionesInventario[] = {
+                            "1. Agregar Producto",
+                            "2. Consultar Productos",
+                            "3. Editar Producto",
+                            "4. Eliminar Producto",
+                            "5. Ver Stock Bajo",
+                            "6. Productos Vendidos",
+                            "7. Total Vendido en Productos",
+                            "8. Regresar al Menú Principal"
+                        };
+                        opcionInventario = JOptionPane.showOptionDialog(null, "Seleccione una opción", "Gestión de Inventario",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcionesInventario, opcionesInventario[0]);
+
+                        if (opcionInventario == JOptionPane.CLOSED_OPTION) {
+                            break;
+                        }
+
+                        switch (opcionInventario) {
+                            case 0:
+                                InventarioGestores.AgregarInventario();
+                                break;
+                            case 1:
+                                InventarioGestores.consultarInventarios();
+                                break;
+                            case 2:
+                                InventarioGestores.editarInventario();
+                                break;
+                            case 3:
+                                InventarioGestores.eliminarInventario();
+                                break;
+                            case 4:
+                                InventarioGestores.consultarStockBajo();
+                                break;
+                            case 5:
+                                GestorProductosVendidos.consultarProductosVendidos();
+                                break;
+                            case 6:
+                                GestorProductosVendidos.calcularTotalGeneral();
+                                break;
+                            case 7:
+                                // Regresar al menú principal
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(null, "Opción inválida. Intente nuevamente.");
+                        }
+                    } while (opcionInventario != 7);
 
                     break;
                 case 6:
