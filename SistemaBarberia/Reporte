@@ -1,0 +1,139 @@
+package com.mycompany.sistemabarberia.Clases;
+
+import com.mycompany.sistemabarberia.Enumeradores.Tipo;
+import javax.swing.JOptionPane;
+
+public class Reporte {
+
+    private int id;
+    private Tipo tipos;
+    private Inventario idInventario;
+    private Venta idVenta;
+    private Citas idCita;
+    private Cliente idCliente;
+
+    public Reporte(int id, Tipo tipos, Inventario idInventario, Venta idVenta, Citas idCita, Cliente idCliente) {
+        this.id = id;
+        this.tipos = tipos;
+        this.idInventario = idInventario;
+        this.idVenta = idVenta;
+        this.idCita = idCita;
+        this.idCliente = idCliente;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Tipo getTipos() {
+        return tipos;
+    }
+
+    public void setTipos(Tipo tipos) {
+        this.tipos = tipos;
+    }
+
+    public Inventario getIdInventario() {
+        return idInventario;
+    }
+
+    public void setIdInventario(Inventario idInventario) {
+        this.idInventario = idInventario;
+    }
+
+    public Venta getIdVenta() {
+        return idVenta;
+    }
+
+    public void setIdVenta(Venta idVenta) {
+        this.idVenta = idVenta;
+    }
+
+    public Citas getIdCita() {
+        return idCita;
+    }
+
+    public void setIdCita(Citas idCita) {
+        this.idCita = idCita;
+    }
+
+    public Cliente getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Cliente idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public void generar() {
+
+        String mensaje = "";
+
+        switch (tipos) {
+
+            case Venta:
+                mensaje = "Reporte de Venta\n"
+                        + "ID: " + idVenta.getId()
+                        + "\nCliente: " + idVenta.getIdCliente()
+                        + "\nSubtotal: " + idVenta.getSubtotal()
+                        + "\nDescuento: " + idVenta.getDescuento()
+                        + "\nImpuesto: " + idVenta.getImpuesto()
+                        + "\nTotal: " + idVenta.getTotal();
+                break;
+
+            case Cita:
+                mensaje = "Reporte de Cita\n"
+                        + "ID: " + idCita.getIdCita()
+                        + "\nCliente: " + idCita.getCliente()
+                        + "\nBarbero: " + idCita.getBarbero()
+                        + "\nFecha: " + idCita.getFecha()
+                        + "\nHora: " + idCita.getHora()
+                        + "\nDuración: " + idCita.getDuracion()
+                        + "\nEstado: " + idCita.getEstado();
+                break;
+
+            case Producto:
+                mensaje = "Reporte de Producto\n"
+                        + "ID: " + idInventario.getId()
+                        + "\nNombre: " + idInventario.getNombre()
+                        + "\nDescripción: " + idInventario.getDescripcion()
+                        + "\nStock: " + idInventario.getStock()
+                        + "\nStock mínimo: " + idInventario.getStokMinimo()
+                        + "\nPrecio de compra: " + idInventario.getPrecioCompra()
+                        + "\nPrecio de venta: " + idInventario.getPrecioVenta();
+                break;
+
+            case Inventario:
+                mensaje = "Reporte de Inventario\n"
+                        + "ID: " + idInventario.getId()
+                        + "\nNombre: " + idInventario.getNombre()
+                        + "\nDescripción: " + idInventario.getDescripcion()
+                        + "\nStock: " + idInventario.getStock()
+                        + "\nStock mínimo: " + idInventario.getStokMinimo()
+                        + "\nPrecio de compra: " + idInventario.getPrecioCompra()
+                        + "\nPrecio de venta: " + idInventario.getPrecioVenta();
+                break;
+        }
+
+        JOptionPane.showMessageDialog(null, mensaje);
+    }
+
+    public void consultar() {
+
+        JOptionPane.showMessageDialog(null, toString());
+
+    }
+
+    @Override
+    public String toString() {
+        return "Reporte{" + "id=" + id + ", tipos=" + tipos
+                + ", idInventario=" + idInventario
+                + ", idVenta=" + idVenta
+                + ", idCita=" + idCita
+                + ", idCliente=" + idCliente + '}';
+    }
+}
