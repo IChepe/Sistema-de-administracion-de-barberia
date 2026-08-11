@@ -1,22 +1,24 @@
 package com.mycompany.sistemabarberia.Clases;
 
 public class ProductoVendido {
-private int id;
-private Inventario idInventario;
-private Venta idVenta;
-private int cantidad;
-private double precioUnitario;
-private double subtotal;
+    private int id;
+    private Inventario inventario;
+    private Venta venta;
+    private int cantidad;
+    private double precioUnitario;
+    private double subtotal;
 
-    public ProductoVendido(int id, Inventario idInventario, Venta idVenta, int cantidad, double precioUnitario, double subtotal) {
+   
+    public ProductoVendido(int id, Inventario inventario, Venta venta, int cantidad, double precioUnitario) {
         this.id = id;
-        this.idInventario = idInventario;
-        this.idVenta = idVenta;
+        this.inventario = inventario;
+        this.venta = venta;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
-        this.subtotal = subtotal;
+        this.subtotal = cantidad * precioUnitario;
     }
 
+   
     public int getId() {
         return id;
     }
@@ -25,20 +27,20 @@ private double subtotal;
         this.id = id;
     }
 
-    public Inventario getIdInventario() {
-        return idInventario;
+    public Inventario getInventario() {
+        return inventario;
     }
 
-    public void setIdInventario(Inventario idInventario) {
-        this.idInventario = idInventario;
+    public void setInventario(Inventario inventario) {
+        this.inventario = inventario;
     }
 
-    public Venta getIdVenta() {
-        return idVenta;
+    public Venta getVenta() {
+        return venta;
     }
 
-    public void setIdVenta(Venta idVenta) {
-        this.idVenta = idVenta;
+    public void setVenta(Venta venta) {
+        this.venta = venta;
     }
 
     public int getCantidad() {
@@ -47,6 +49,7 @@ private double subtotal;
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+        this.subtotal = cantidad * precioUnitario; // recalcular subtotal
     }
 
     public double getPrecioUnitario() {
@@ -55,23 +58,22 @@ private double subtotal;
 
     public void setPrecioUnitario(double precioUnitario) {
         this.precioUnitario = precioUnitario;
+        this.subtotal = cantidad * precioUnitario; // recalcular subtotal
     }
 
     public double getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(double subtotal) {
-        this.subtotal = subtotal;
-    }
-
     @Override
     public String toString() {
-        return "ProductoVendido{" + "id=" + id + ", idInventario=" + idInventario + ", idVenta=" + idVenta + ", cantidad=" + cantidad + ", precioUnitario=" + precioUnitario + ", subtotal=" + subtotal + '}';
+        return "ProductoVendido{" +
+               "id=" + id +
+               ", inventario=" + inventario.getNombre() +
+               ", venta=" + venta.(getIdVenta) +
+               ", cantidad=" + cantidad +
+               ", precioUnitario=" + precioUnitario +
+               ", subtotal=" + subtotal +
+               '}';
     }
-
-
-
-
-
 }
