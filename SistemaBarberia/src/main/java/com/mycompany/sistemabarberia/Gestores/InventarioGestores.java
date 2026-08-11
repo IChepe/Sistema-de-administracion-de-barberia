@@ -84,27 +84,48 @@ public class InventarioGestores {
 
     // Recorre el arreglo y muestra todos los productos registrados para escoger uno,
     // asi no hay que aprenderse los ID. Devuelve la posicion, o -1 si se cierra.
-    public static int seleccionarInventario(String titulo) {
+    public static int seleccionarInventario(String titulo, boolean soloActivos) {
 
-        if (contador == 0) {
-            JOptionPane.showMessageDialog(null, "No hay productos registrados");
+        // Primero se cuentan los que se van a mostrar.
+        int disponibles = 0;
+        for (int i = 0; i < contador; i++) {
+            if (!soloActivos || inventarios[i].isEstado()) {
+                disponibles++;
+            }
+        }
+
+        if (disponibles == 0) {
+            JOptionPane.showMessageDialog(null, "No hay productos para mostrar");
             return -1;
         }
 
-        String opciones[] = new String[contador];
+        // El arreglo posiciones guarda en que lugar del arreglo original quedo cada opcion.
+        String opciones[] = new String[disponibles];
+        int posiciones[] = new int[disponibles];
+        int j = 0;
         for (int i = 0; i < contador; i++) {
-            opciones[i] = inventarios[i].getId() + " - " + inventarios[i].getNombre()
-                    + " (" + (inventarios[i].isEstado() ? "Activo" : "Inactivo") + ")";
+            if (!soloActivos || inventarios[i].isEstado()) {
+                opciones[j] = inventarios[i].getId() + " - " + inventarios[i].getNombre()
+                        + " (" + (inventarios[i].isEstado() ? "Activo" : "Inactivo") + ")";
+                posiciones[j] = i;
+                j++;
+            }
         }
 
-        return JOptionPane.showOptionDialog(null, "Seleccione el producto:", titulo,
+        int seleccion = JOptionPane.showOptionDialog(null, "Seleccione el producto:", titulo,
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+
+        if (seleccion == JOptionPane.CLOSED_OPTION) {
+            return -1;
+        }
+
+        return posiciones[seleccion];
     }
 
 
     public static void editarInventario() {
 
-        int i = seleccionarInventario("Editar Producto");
+        int i = seleccionarInventario("Editar Producto", true);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }
@@ -125,7 +146,8 @@ public class InventarioGestores {
 
     public static void eliminarInventario() {
 
-        int i = seleccionarInventario("Eliminar Producto");
+        // Aqui se muestran todos, porque es la unica forma de volver a activar uno.
+        int i = seleccionarInventario("Eliminar Producto", false);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }

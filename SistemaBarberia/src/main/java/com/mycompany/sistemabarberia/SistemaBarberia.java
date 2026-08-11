@@ -10,6 +10,7 @@ import com.mycompany.sistemabarberia.Gestores.CitasGestores;
 import com.mycompany.sistemabarberia.Gestores.ClienteGestores;
 import com.mycompany.sistemabarberia.Gestores.GestorProductosVendidos;
 import com.mycompany.sistemabarberia.Gestores.InventarioGestores;
+import com.mycompany.sistemabarberia.Gestores.ReporteGestores;
 import com.mycompany.sistemabarberia.Gestores.ServicioGestores;
 import com.mycompany.sistemabarberia.Gestores.UsuarioGestores;
 import com.mycompany.sistemabarberia.Gestores.VentaGestores;
@@ -81,7 +82,8 @@ public class SistemaBarberia {
                 "5. Ventas",
                 "6. Inventario",
                 "7. Usuarios",
-                "8. Salir"
+                "8. Reportes",
+                "9. Salir"
             };
              opcion = JOptionPane.showOptionDialog(null, "Seleccione un Modulo", "Menú de Gestor de barbería",
                     JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
@@ -379,12 +381,51 @@ public class SistemaBarberia {
                     } while (opcionUsuario != 4);
 
                     break;
+                case 7:
+                    int opcionReporte = 0;
+                    do {
+                        String opcionesReporte[] = {
+                            "1. Crear Reporte",
+                            "2. Consultar Reportes",
+                            "3. Ver Reporte",
+                            "4. Eliminar Reporte",
+                            "5. Regresar al Menú Principal"
+                        };
+                        opcionReporte = JOptionPane.showOptionDialog(null, "Seleccione una opción", "Gestión de Reportes",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcionesReporte, opcionesReporte[0]);
+
+                        if (opcionReporte == JOptionPane.CLOSED_OPTION) {
+                            break;
+                        }
+
+                        switch (opcionReporte) {
+                            case 0:
+                                ReporteGestores.crearReporte();
+                                break;
+                            case 1:
+                                ReporteGestores.consultarReportes();
+                                break;
+                            case 2:
+                                ReporteGestores.generar();
+                                break;
+                            case 3:
+                                ReporteGestores.eliminarReporte();
+                                break;
+                            case 4:
+                                // Regresar al menú principal
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(null, "Opción inválida. Intente nuevamente.");
+                        }
+                    } while (opcionReporte != 4);
+
+                    break;
 
                 default:
                     JOptionPane.showMessageDialog(null, "Opción inválida. Intente nuevamente.");
             }
 
-        } while (opcion != 7);
+        } while (opcion != 8);
        
     }
 

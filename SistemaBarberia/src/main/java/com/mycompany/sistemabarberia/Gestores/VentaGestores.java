@@ -266,7 +266,8 @@ public class VentaGestores {
     // Vuelve a mostrar la factura de una venta ya registrada.
     public static void generarFactura() {
 
-        int i = seleccionarVenta("Generar Factura");
+        // Solo las activas: una venta anulada no se factura.
+        int i = seleccionarVenta("Generar Factura", true);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }
@@ -351,28 +352,50 @@ public class VentaGestores {
 
     // Recorre el arreglo y muestra todas las ventas registradas para escoger una,
     // asi no hay que aprenderse los ID. Devuelve la posicion, o -1 si se cierra.
-    public static int seleccionarVenta(String titulo) {
+    public static int seleccionarVenta(String titulo, boolean soloActivas) {
 
-        if (contador == 0) {
-            JOptionPane.showMessageDialog(null, "No hay ventas registradas");
+        // Primero se cuentan las que se van a mostrar.
+        int disponibles = 0;
+        for (int i = 0; i < contador; i++) {
+            if (!soloActivas || ventas[i].isEstado()) {
+                disponibles++;
+            }
+        }
+
+        if (disponibles == 0) {
+            JOptionPane.showMessageDialog(null, "No hay ventas para mostrar");
             return -1;
         }
 
-        String opciones[] = new String[contador];
+        // El arreglo posiciones guarda en que lugar del arreglo original quedo cada opcion.
+        String opciones[] = new String[disponibles];
+        int posiciones[] = new int[disponibles];
+        int j = 0;
         for (int i = 0; i < contador; i++) {
-            opciones[i] = ventas[i].getId() + " - " + ventas[i].getIdCliente().getNombre()
-                    + " - " + ventas[i].getTotal()
-                    + " (" + (ventas[i].isEstado() ? "Activa" : "Anulada") + ")";
+            if (!soloActivas || ventas[i].isEstado()) {
+                opciones[j] = ventas[i].getId() + " - " + ventas[i].getIdCliente().getNombre()
+                        + " - " + ventas[i].getTotal()
+                        + " (" + (ventas[i].isEstado() ? "Activa" : "Anulada") + ")";
+                posiciones[j] = i;
+                j++;
+            }
         }
 
-        return JOptionPane.showOptionDialog(null, "Seleccione la venta:", titulo,
+        int seleccion = JOptionPane.showOptionDialog(null, "Seleccione la venta:", titulo,
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+
+        if (seleccion == JOptionPane.CLOSED_OPTION) {
+            return -1;
+        }
+
+        return posiciones[seleccion];
     }
 
 
     public static void anularVenta() {
 
-        int i = seleccionarVenta("Anular Venta");
+        // Aqui se muestran todas, porque es la unica forma de volver a activar una.
+        int i = seleccionarVenta("Anular Venta", false);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }

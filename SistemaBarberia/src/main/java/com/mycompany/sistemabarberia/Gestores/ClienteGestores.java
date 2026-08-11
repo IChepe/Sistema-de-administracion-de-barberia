@@ -65,26 +65,47 @@ public class ClienteGestores {
 
     // Recorre el arreglo y muestra todos los clientes registrados para escoger uno,
     // asi no hay que aprenderse los ID. Devuelve la posicion, o -1 si se cierra.
-    public static int seleccionarCliente(String titulo) {
+    public static int seleccionarCliente(String titulo, boolean soloActivos) {
 
-        if (contador == 0) {
-            JOptionPane.showMessageDialog(null, "No hay clientes registrados");
+        // Primero se cuentan los que se van a mostrar.
+        int disponibles = 0;
+        for (int i = 0; i < contador; i++) {
+            if (!soloActivos || clientes[i].isEstado()) {
+                disponibles++;
+            }
+        }
+
+        if (disponibles == 0) {
+            JOptionPane.showMessageDialog(null, "No hay clientes para mostrar");
             return -1;
         }
 
-        String opciones[] = new String[contador];
+        // El arreglo posiciones guarda en que lugar del arreglo original quedo cada opcion.
+        String opciones[] = new String[disponibles];
+        int posiciones[] = new int[disponibles];
+        int j = 0;
         for (int i = 0; i < contador; i++) {
-            opciones[i] = clientes[i].getId() + " - " + clientes[i].getNombre() + " " + clientes[i].getApellido()
-                    + " (" + (clientes[i].isEstado() ? "Activo" : "Inactivo") + ")";
+            if (!soloActivos || clientes[i].isEstado()) {
+                opciones[j] = clientes[i].getId() + " - " + clientes[i].getNombre() + " " + clientes[i].getApellido()
+                        + " (" + (clientes[i].isEstado() ? "Activo" : "Inactivo") + ")";
+                posiciones[j] = i;
+                j++;
+            }
         }
 
-        return JOptionPane.showOptionDialog(null, "Seleccione el cliente:", titulo,
+        int seleccion = JOptionPane.showOptionDialog(null, "Seleccione el cliente:", titulo,
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+
+        if (seleccion == JOptionPane.CLOSED_OPTION) {
+            return -1;
+        }
+
+        return posiciones[seleccion];
     }
 
     public static void editarCliente() {
 
-        int i = seleccionarCliente("Editar Cliente");
+        int i = seleccionarCliente("Editar Cliente", true);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }
@@ -102,7 +123,8 @@ public class ClienteGestores {
 
     public static void eliminarCliente() {
 
-        int i = seleccionarCliente("Eliminar Cliente");
+        // Aqui se muestran todos, porque es la unica forma de volver a activar uno.
+        int i = seleccionarCliente("Eliminar Cliente", false);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }

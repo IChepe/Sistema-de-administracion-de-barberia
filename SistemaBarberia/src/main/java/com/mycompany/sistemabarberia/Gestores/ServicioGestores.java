@@ -62,26 +62,47 @@ public class ServicioGestores {
 
     // Recorre el arreglo y muestra todos los servicios registrados para escoger uno,
     // asi no hay que aprenderse los ID. Devuelve la posicion, o -1 si se cierra.
-    public static int seleccionarServicio(String titulo) {
+    public static int seleccionarServicio(String titulo, boolean soloActivos) {
 
-        if (contador == 0) {
-            JOptionPane.showMessageDialog(null, "No hay servicios registrados");
+        // Primero se cuentan los que se van a mostrar.
+        int disponibles = 0;
+        for (int i = 0; i < contador; i++) {
+            if (!soloActivos || servicios[i].isEstado()) {
+                disponibles++;
+            }
+        }
+
+        if (disponibles == 0) {
+            JOptionPane.showMessageDialog(null, "No hay servicios para mostrar");
             return -1;
         }
 
-        String opciones[] = new String[contador];
+        // El arreglo posiciones guarda en que lugar del arreglo original quedo cada opcion.
+        String opciones[] = new String[disponibles];
+        int posiciones[] = new int[disponibles];
+        int j = 0;
         for (int i = 0; i < contador; i++) {
-            opciones[i] = servicios[i].getIdServicio() + " - " + servicios[i].getNombreser()
-                    + " (" + (servicios[i].isEstado() ? "Activo" : "Inactivo") + ")";
+            if (!soloActivos || servicios[i].isEstado()) {
+                opciones[j] = servicios[i].getIdServicio() + " - " + servicios[i].getNombreser()
+                        + " (" + (servicios[i].isEstado() ? "Activo" : "Inactivo") + ")";
+                posiciones[j] = i;
+                j++;
+            }
         }
 
-        return JOptionPane.showOptionDialog(null, "Seleccione el servicio:", titulo,
+        int seleccion = JOptionPane.showOptionDialog(null, "Seleccione el servicio:", titulo,
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+
+        if (seleccion == JOptionPane.CLOSED_OPTION) {
+            return -1;
+        }
+
+        return posiciones[seleccion];
     }
 
     public static void editarServicio() {
 
-        int i = seleccionarServicio("Editar Servicio");
+        int i = seleccionarServicio("Editar Servicio", true);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }
@@ -96,7 +117,8 @@ public class ServicioGestores {
 
     public static void eliminarServicio() {
 
-        int i = seleccionarServicio("Eliminar Servicio");
+        // Aqui se muestran todos, porque es la unica forma de volver a activar uno.
+        int i = seleccionarServicio("Eliminar Servicio", false);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }

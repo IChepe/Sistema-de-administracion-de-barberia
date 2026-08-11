@@ -3,20 +3,27 @@ package com.mycompany.sistemabarberia.Clases;
 import com.mycompany.sistemabarberia.Enumeradores.Tipo;
 
 public class Reporte {
-private int id;
-private Tipo tipos;
-private Inventario idInventario;
-private Venta idVenta;
-private Citas idCita;
-private Cliente idCliente;
 
-    public Reporte(int id, Tipo tipos, Inventario idInventario, Venta idVenta, Citas idCita, Cliente idCliente) {
+    private int id;
+    private Tipo tipos;
+    private Inventario idInventario;
+    private Venta idVenta;
+    private Citas idCita;
+    private Cliente idCliente;
+    private boolean estado;
+
+    public Reporte() {
+        this.estado = true;
+    }
+
+    public Reporte(int id, Tipo tipos, Inventario idInventario, Venta idVenta, Citas idCita, Cliente idCliente, boolean estado) {
         this.id = id;
         this.tipos = tipos;
         this.idInventario = idInventario;
         this.idVenta = idVenta;
         this.idCita = idCita;
         this.idCliente = idCliente;
+        this.estado = estado;
     }
 
     public int getId() {
@@ -67,20 +74,20 @@ private Cliente idCliente;
         this.idCliente = idCliente;
     }
 
-    @Override
-    public String toString() {
-        return "Reporte{" + "id=" + id + ", tipos=" + tipos + ", idInventario=" + idInventario + ", idVenta=" + idVenta + ", idCita=" + idCita + ", idCliente=" + idCliente + '}';
+    public boolean isEstado() {
+        return estado;
     }
 
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
 
-    
-    
-    
-    
-
-
-
-
-
+    @Override
+    public String toString() {
+        return "----- Reporte -----" + "\n"
+             + "ID: " + id + "\n"
+             + "Tipo: " + tipos + "\n"
+             + "Estado: " + (estado ? "Activo" : "Inactivo") + "\n";
+    }
 
 }

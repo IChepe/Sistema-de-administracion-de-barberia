@@ -102,26 +102,47 @@ public class Barberogestores {
 
     // Recorre el arreglo y muestra todos los barberos registrados para escoger uno,
     // asi no hay que aprenderse los ID. Devuelve la posicion, o -1 si se cierra.
-    public static int seleccionarbarbero(String titulo) {
+    public static int seleccionarbarbero(String titulo, boolean soloActivos) {
 
-        if (COntador == 0) {
-            JOptionPane.showMessageDialog(null, "No hay barberos registrados");
+        // Primero se cuentan los que se van a mostrar.
+        int disponibles = 0;
+        for (int i = 0; i < COntador; i++) {
+            if (!soloActivos || barbero[i].isEstadousuario()) {
+                disponibles++;
+            }
+        }
+
+        if (disponibles == 0) {
+            JOptionPane.showMessageDialog(null, "No hay barberos para mostrar");
             return -1;
         }
 
-        String opciones[] = new String[COntador];
+        // El arreglo posiciones guarda en que lugar del arreglo original quedo cada opcion.
+        String opciones[] = new String[disponibles];
+        int posiciones[] = new int[disponibles];
+        int j = 0;
         for (int i = 0; i < COntador; i++) {
-            opciones[i] = barbero[i].getId() + " - " + barbero[i].getNombre()
-                    + " (" + (barbero[i].isEstadousuario() ? "Activo" : "Inactivo") + ")";
+            if (!soloActivos || barbero[i].isEstadousuario()) {
+                opciones[j] = barbero[i].getId() + " - " + barbero[i].getNombre()
+                        + " (" + (barbero[i].isEstadousuario() ? "Activo" : "Inactivo") + ")";
+                posiciones[j] = i;
+                j++;
+            }
         }
 
-        return JOptionPane.showOptionDialog(null, "Seleccione el barbero:", titulo,
+        int seleccion = JOptionPane.showOptionDialog(null, "Seleccione el barbero:", titulo,
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+
+        if (seleccion == JOptionPane.CLOSED_OPTION) {
+            return -1;
+        }
+
+        return posiciones[seleccion];
     }
 
     public static void editarbarbero() {
 
-        int i = seleccionarbarbero("Editar barbero");
+        int i = seleccionarbarbero("Editar barbero", true);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }
@@ -146,7 +167,8 @@ public class Barberogestores {
     }
     public static void eliminarbarbero() {
 
-        int i = seleccionarbarbero("Eliminar barbero");
+        // Aqui se muestran todos, porque es la unica forma de volver a activar uno.
+        int i = seleccionarbarbero("Eliminar barbero", false);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }
@@ -155,7 +177,7 @@ public class Barberogestores {
     }
     public static void calcularcomision() {
 
-        int i = seleccionarbarbero("Calcular comision");
+        int i = seleccionarbarbero("Calcular comision", true);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }
@@ -170,7 +192,7 @@ public class Barberogestores {
     }
     public static void consultaragenda(){
 
-        int i = seleccionarbarbero("Consultar agenda");
+        int i = seleccionarbarbero("Consultar agenda", true);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }

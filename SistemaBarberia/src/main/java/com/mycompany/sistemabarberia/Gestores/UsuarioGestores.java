@@ -71,26 +71,47 @@ public class UsuarioGestores {
 
     // Recorre el arreglo y muestra todos los usuarios registrados para escoger uno,
     // asi no hay que aprenderse los ID. Devuelve la posicion, o -1 si se cierra.
-    public static int seleccionarUsuario(String titulo) {
+    public static int seleccionarUsuario(String titulo, boolean soloActivos) {
 
-        if (contador == 0) {
-            JOptionPane.showMessageDialog(null, "No hay usuarios registrados");
+        // Primero se cuentan los que se van a mostrar.
+        int disponibles = 0;
+        for (int i = 0; i < contador; i++) {
+            if (!soloActivos || usuarios[i].isEstado()) {
+                disponibles++;
+            }
+        }
+
+        if (disponibles == 0) {
+            JOptionPane.showMessageDialog(null, "No hay usuarios para mostrar");
             return -1;
         }
 
-        String opciones[] = new String[contador];
+        // El arreglo posiciones guarda en que lugar del arreglo original quedo cada opcion.
+        String opciones[] = new String[disponibles];
+        int posiciones[] = new int[disponibles];
+        int j = 0;
         for (int i = 0; i < contador; i++) {
-            opciones[i] = usuarios[i].getId() + " - " + usuarios[i].getNombre() + " " + usuarios[i].getApellido()
-                    + " (" + (usuarios[i].isEstado() ? "Activo" : "Inactivo") + ")";
+            if (!soloActivos || usuarios[i].isEstado()) {
+                opciones[j] = usuarios[i].getId() + " - " + usuarios[i].getNombre() + " " + usuarios[i].getApellido()
+                        + " (" + (usuarios[i].isEstado() ? "Activo" : "Inactivo") + ")";
+                posiciones[j] = i;
+                j++;
+            }
         }
 
-        return JOptionPane.showOptionDialog(null, "Seleccione el usuario:", titulo,
+        int seleccion = JOptionPane.showOptionDialog(null, "Seleccione el usuario:", titulo,
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+
+        if (seleccion == JOptionPane.CLOSED_OPTION) {
+            return -1;
+        }
+
+        return posiciones[seleccion];
     }
 
     public static void editarUsuario() {
 
-        int i = seleccionarUsuario("Editar Usuario");
+        int i = seleccionarUsuario("Editar Usuario", true);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }
@@ -109,7 +130,8 @@ public class UsuarioGestores {
 
     public static void eliminarUsuario() {
 
-        int i = seleccionarUsuario("Eliminar Usuario");
+        // Aqui se muestran todos, porque es la unica forma de volver a activar uno.
+        int i = seleccionarUsuario("Eliminar Usuario", false);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }
