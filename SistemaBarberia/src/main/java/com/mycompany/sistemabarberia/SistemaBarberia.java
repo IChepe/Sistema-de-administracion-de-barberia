@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import com.mycompany.sistemabarberia.Gestores.ClienteGestores;
 import com.mycompany.sistemabarberia.Gestores.ServicioGestores;
 import com.mycompany.sistemabarberia.Gestores.UsuarioGestores;
+import com.mycompany.sistemabarberia.Gestores.VentaGestores;
 import com.mycompany.sistemabarberia.Gestores.Barberogestores;
 
 /**
@@ -215,6 +216,42 @@ public class SistemaBarberia {
                    
                     break;    
                 case 4:
+                    int opcionVenta = 0;
+                    do {
+                        String opcionesVenta[] = {
+                            "1. Crear Venta",
+                            "2. Consultar Ventas",
+                            "3. Anular Venta",
+                            "4. Generar Factura",
+                            "5. Regresar al Menú Principal"
+                        };
+                        opcionVenta = JOptionPane.showOptionDialog(null, "Seleccione una opción", "Gestión de Ventas",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcionesVenta, opcionesVenta[0]);
+
+                        if (opcionVenta == JOptionPane.CLOSED_OPTION) {
+                            break;
+                        }
+
+                        switch (opcionVenta) {
+                            case 0:
+                                VentaGestores.crearVenta();
+                                break;
+                            case 1:
+                                VentaGestores.consultarVentas();
+                                break;
+                            case 2:
+                                VentaGestores.anularVenta();
+                                break;
+                            case 3:
+                                VentaGestores.generarFactura();
+                                break;
+                            case 4:
+                                // Regresar al menú principal
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(null, "Opción inválida. Intente nuevamente.");
+                        }
+                    } while (opcionVenta != 4);
 
                     break;
                 case 5:

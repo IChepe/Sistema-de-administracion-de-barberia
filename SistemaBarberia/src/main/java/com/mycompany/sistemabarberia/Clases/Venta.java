@@ -2,7 +2,7 @@ package com.mycompany.sistemabarberia.Clases;
 
 public class Venta {
 private int id;
-private Citas idCita;
+private Servicio idServicio;
 private Cliente idCliente;
 private Barbero idBarbero;
 private double subtotal;
@@ -12,9 +12,13 @@ private double total;
 private boolean estado;
 private String fechaVenta;
 
-    public Venta(int id, Citas idCita, Cliente idCliente, Barbero idBarbero, double subtotal, double descuento, double impuesto, double total, boolean estado, String fechaVenta) {
+    public Venta() {
+        this.estado = true;
+    }
+
+    public Venta(int id, Servicio idServicio, Cliente idCliente, Barbero idBarbero, double subtotal, double descuento, double impuesto, double total, boolean estado, String fechaVenta) {
         this.id = id;
-        this.idCita = idCita;
+        this.idServicio = idServicio;
         this.idCliente = idCliente;
         this.idBarbero = idBarbero;
         this.subtotal = subtotal;
@@ -33,12 +37,12 @@ private String fechaVenta;
         this.id = id;
     }
 
-    public Citas getIdCita() {
-        return idCita;
+    public Servicio getIdServicio() {
+        return idServicio;
     }
 
-    public void setIdCita(Citas idCita) {
-        this.idCita = idCita;
+    public void setIdServicio(Servicio idServicio) {
+        this.idServicio = idServicio;
     }
 
     public Cliente getIdCliente() {
@@ -107,7 +111,17 @@ private String fechaVenta;
 
     @Override
     public String toString() {
-        return "Venta{" + "id=" + id + ", idCita=" + idCita + ", idCliente=" + idCliente + ", idBarbero=" + idBarbero + ", subtotal=" + subtotal + ", descuento=" + descuento + ", impuesto=" + impuesto + ", total=" + total + ", estado=" + estado + ", fechaVenta=" + fechaVenta + '}';
+        return "----- Venta -----" + "\n"
+             + "ID: " + id + "\n"
+             + "Fecha: " + fechaVenta + "\n"
+             + "Cliente: " + (idCliente != null ? idCliente.getNombre() + " " + idCliente.getApellido() : "Sin asignar") + "\n"
+             + "Barbero: " + (idBarbero != null ? idBarbero.getNombre() : "Sin asignar") + "\n"
+             + "Servicio: " + (idServicio != null ? idServicio.getNombreser() : "Sin asignar") + "\n"
+             + "Subtotal: " + subtotal + "\n"
+             + "Descuento: " + descuento + "\n"
+             + "Impuesto: " + impuesto + "\n"
+             + "Total: " + total + "\n"
+             + "Estado: " + (estado ? "Activa" : "Anulada") + "\n";
     }
 
 
