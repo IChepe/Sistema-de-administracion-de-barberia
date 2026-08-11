@@ -93,14 +93,15 @@ private boolean estadousuario;
     @Override
     public String toString() {
         return "Barbero" 
-             + "\n\nID: " + id
+             + "\nID: " + id
              + "\nNombre: " + nombre 
              + "\nEspecialidad: " + especialidad 
              + "\nFecha de registro del barbero: " + fechaRegistro 
              + "\nHorario del barbero: " + horario 
              + "\nComisión del barbero: " + comision 
              + "\nEstado: " + estado 
-             + "\nEstado del usuario: " + (estadousuario ? "Activo" : "Inactivo");
+             + "\nEstado del usuario: " + (estadousuario ? "Activo" : "Inactivo"
+             + "\n");
     }
 
     

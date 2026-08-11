@@ -10,6 +10,7 @@ import com.mycompany.sistemabarberia.Gestores.ClienteGestores;
 import com.mycompany.sistemabarberia.Gestores.ServicioGestores;
 import com.mycompany.sistemabarberia.Gestores.UsuarioGestores;
 import com.mycompany.sistemabarberia.Gestores.Barberogestores;
+import com.mycompany.sistemabarberia.Gestores.Citasgestores;
 
 /**
  *
@@ -212,7 +213,39 @@ public class SistemaBarberia {
 
                     break;
                 case 3:
-                   
+                   int opcioncita = 0;
+                    do {
+                        String opcionesCliente[] = {
+                            "1. Agregar cita",
+                            "2. confirmar cita",
+                            "3. Cancelar Cliente",
+                            "4. Regresar al Menú Principal"
+                        };
+                        opcionCliente = JOptionPane.showOptionDialog(null, "Seleccione una opción", "Gestión de citas",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcionesCliente, opcionesCliente[0]);
+
+                        if (opcioncita == JOptionPane.CLOSED_OPTION) {
+                            break;
+                        }
+
+                        switch (opcionCliente) {
+                            case 0:
+                                Citasgestores.crearcita();
+                                break;
+                            case 1:
+                                Citasgestores.confirmarcita();
+                                break;
+                            case 2:
+                                Citasgestores.cancelarcita();
+                                break;
+                            case 3:
+                                
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(null, "Opción inválida. Intente nuevamente.");
+                        }
+                    } while (opcioncita != 4);
+
                     break;    
                 case 4:
 

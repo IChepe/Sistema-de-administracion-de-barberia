@@ -10,30 +10,77 @@ package com.mycompany.sistemabarberia.Clases;
  */
 public class Citas {
    
-    private int idCita;
-    private Cliente cliente;
-    private Barbero barbero;
-    private String fecha;
-    private String hora;
+    private int id;
+    private int idCliente;
+    private int idBarbero;
+    private int idServicio;
+    private String fechahora;
     private int duracion;
     private String estado;
-    
-    public Citas(){
-        idCita = 0;
-        fecha = "";
-        hora = "";
-        duracion = 0;
-        estado = "";     
+    private String notas;
+    private String fechacreacion;
+
+    public Citas() {
     }
 
-    public Citas(int idCita, Cliente cliente, Barbero barbero, String fecha, String hora, int duracion, String estado) {
-        this.idCita = idCita;
-        this.cliente = cliente;
-        this.barbero = barbero;
-        this.fecha = fecha;
-        this.hora = hora;
+    public Citas(int id, int idCliente, int idBarbero, int idServicio, String fechahora, int duracion, String estado, String notas, String fechacreacion) {
+        this.id = id;
+        this.idCliente = idCliente;
+        this.idBarbero = idBarbero;
+        this.idServicio = idServicio;
+        this.fechahora = fechahora;
         this.duracion = duracion;
         this.estado = estado;
+        this.notas = notas;
+        this.fechacreacion = fechacreacion;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public int getIdBarbero() {
+        return idBarbero;
+    }
+
+    public void setIdBarbero(int idBarbero) {
+        this.idBarbero = idBarbero;
+    }
+
+    public int getIdServicio() {
+        return idServicio;
+    }
+
+    public void setIdServicio(int idServicio) {
+        this.idServicio = idServicio;
+    }
+
+    public String getFechahora() {
+        return fechahora;
+    }
+
+    public void setFechahora(String fechahora) {
+        this.fechahora = fechahora;
+    }
+
+    public int getDuracion() {
+        return duracion;
+    }
+
+    public void setDuracion(int duracion) {
+        this.duracion = duracion;
     }
 
     public String getEstado() {
@@ -44,54 +91,34 @@ public class Citas {
         this.estado = estado;
     }
 
-    public int getIdCita() {
-        return idCita;
+    public String getNotas() {
+        return notas;
     }
 
-    public void setIdCita(int idCita) {
-        this.idCita = idCita;
+    public void setNotas(String notas) {
+        this.notas = notas;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public String getFechacreacion() {
+        return fechacreacion;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public Barbero getBarbero() {
-        return barbero;
-    }
-
-    public void setBarbero(Barbero barbero) {
-        this.barbero = barbero;
-    }
-
-    public String getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
-
-    public String getHora() {
-        return hora;
-    }
-
-    public void setHora(String hora) {
-        this.hora = hora;
-    }
-
-    public int getDuracion() {
-        return duracion;
-    }
-
-    public void setDuracion(int duracion) {
-        this.duracion = duracion;
+    public void setFechacreacion(String fechacreacion) {
+        this.fechacreacion = fechacreacion;
     }
     
-    
-    
+     @Override
+    public String toString() {
+        return "Citas" 
+             + "\nID: " + id
+             + "\nID del cliente: " + idCliente 
+             + "\nID del barbero: " + idBarbero 
+             + "\nID del servicio: " + idServicio 
+             + "\nFecha y hora: " + fechahora 
+             + "\nDuración: " + duracion 
+             + "\nEstado: " + estado 
+             + "\nNotas: " + notas
+             + "\nFecha de creación de la cita:  " +fechacreacion 
+             + "\n";
+    } 
 }
