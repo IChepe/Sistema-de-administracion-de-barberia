@@ -6,6 +6,7 @@ package com.mycompany.sistemabarberia;
 
 import javax.swing.JOptionPane;
 
+import com.mycompany.sistemabarberia.Gestores.CitasGestores;
 import com.mycompany.sistemabarberia.Gestores.ClienteGestores;
 import com.mycompany.sistemabarberia.Gestores.ServicioGestores;
 import com.mycompany.sistemabarberia.Gestores.UsuarioGestores;
@@ -213,8 +214,40 @@ public class SistemaBarberia {
 
                     break;
                 case 3:
-                   
-                    break;    
+                    int opcionCita = 0;
+                    do {
+                        String opcionesCita[] = {
+                            "1. Agendar Cita",
+                            "2. Consultar Citas",
+                            "3. Anular Cita",
+                            "4. Regresar al Menú Principal"
+                        };
+                        opcionCita = JOptionPane.showOptionDialog(null, "Seleccione una opción", "Gestión de Citas",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcionesCita, opcionesCita[0]);
+
+                        if (opcionCita == JOptionPane.CLOSED_OPTION) {
+                            break;
+                        }
+
+                        switch (opcionCita) {
+                            case 0:
+                                CitasGestores.agendarCita();
+                                break;
+                            case 1:
+                                CitasGestores.consultarCitas();
+                                break;
+                            case 2:
+                                CitasGestores.anularCita();
+                                break;
+                            case 3:
+                                // Regresar al menú principal
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(null, "Opción inválida. Intente nuevamente.");
+                        }
+                    } while (opcionCita != 3);
+
+                    break;
                 case 4:
                     int opcionVenta = 0;
                     do {
