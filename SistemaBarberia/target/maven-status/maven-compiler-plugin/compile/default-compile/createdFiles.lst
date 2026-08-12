@@ -1,6 +1,7 @@
 com\mycompany\sistemabarberia\Clases\Reporte.class
 com\mycompany\sistemabarberia\Gestores\ClienteGestores.class
 com\mycompany\sistemabarberia\Clases\Venta.class
+com\mycompany\sistemabarberia\Gestores\ReporteGestores$1.class
 com\mycompany\sistemabarberia\Gestores\ServicioGestores.class
 com\mycompany\sistemabarberia\Gestores\UsuarioGestores.class
 com\mycompany\sistemabarberia\Gestores\VentaGestores.class
