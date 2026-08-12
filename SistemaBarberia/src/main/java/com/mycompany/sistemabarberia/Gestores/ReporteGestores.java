@@ -33,7 +33,7 @@ public class ReporteGestores {
         if (tipoRep == Tipo.Venta) {
 
             // Se reutiliza la lista que ya tiene el gestor de ventas.
-            int posicion = VentaGestores.seleccionarVenta("Reporte de Venta", true);
+            int posicion = VentaGestores.SeleccionarVenta("Reporte de Venta", true);
             if (posicion == JOptionPane.CLOSED_OPTION) {
                 return;
             }

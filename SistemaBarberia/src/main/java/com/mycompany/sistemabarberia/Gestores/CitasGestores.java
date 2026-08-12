@@ -12,14 +12,12 @@ public class CitasGestores {
     public static int ultimoId = 0;
     public static Citas[] citas = new Citas[contador];
 
-    // Cada bloque dura una hora.
+    
     public static int DURACION = 60;
 
 
 
     public static void agendarCita(){
-
-        // ----- Cliente: solo los activos -----
         int clientesActivos = 0;
         for (int i = 0; i < ClienteGestores.contador; i++) {
             if (ClienteGestores.clientes[i].isEstado()) {

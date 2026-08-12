@@ -6,20 +6,17 @@ import com.mycompany.sistemabarberia.Clases.Usuario;
 
 public class UsuarioGestores {
 
-    // El sistema arranca siempre con el usuario Admin ya cargado en la lista.
     public static int contador = 1;
     public static int ultimoId = 1;
     public static Usuario[] usuarios = {
         new Usuario(1, "Admin", "Principal", "admin@barberia.com", "123", "Administrador", true, "09/08/2026")
     };
 
-    // Usuario que inicio sesion en el sistema.
     public static Usuario usuarioActivo = null;
 
 
 
     public static void AgregarUsuario(){
-
         contador++;
         ultimoId++;
         int id = ultimoId;
@@ -39,9 +36,8 @@ public class UsuarioGestores {
         }
         usuarios = copia;
 
-        usuarios[contador - 1] = new Usuario(id, nombreUsu, apellidoUsu, emailUsu, passwordUsu, rolUsu, estadoUsu, fechaRegistroUsu);
-
-
+        usuarios[contador - 1] = new Usuario(id, nombreUsu, apellidoUsu, emailUsu,
+                passwordUsu, rolUsu, estadoUsu, fechaRegistroUsu);
     }
 
 
@@ -53,7 +49,6 @@ public class UsuarioGestores {
             String mensaje = "Usuarios registrados:\n";
             int activos = 0;
             for (int i = 0; i < contador; i++) {
-                // Solo se muestran los que tienen el estado en true.
                 if (usuarios[i] != null && usuarios[i].isEstado()) {
                     mensaje += usuarios[i].toString() + "\n";
                     activos++;
@@ -68,12 +63,7 @@ public class UsuarioGestores {
 
 
     }
-
-    // Recorre el arreglo y muestra todos los usuarios registrados para escoger uno,
-    // asi no hay que aprenderse los ID. Devuelve la posicion, o -1 si se cierra.
     public static int seleccionarUsuario(String titulo, boolean soloActivos) {
-
-        // Primero se cuentan los que se van a mostrar.
         int disponibles = 0;
         for (int i = 0; i < contador; i++) {
             if (!soloActivos || usuarios[i].isEstado()) {
@@ -85,27 +75,31 @@ public class UsuarioGestores {
             JOptionPane.showMessageDialog(null, "No hay usuarios para mostrar");
             return -1;
         }
-
-        // El arreglo posiciones guarda en que lugar del arreglo original quedo cada opcion.
         String opciones[] = new String[disponibles];
         int posiciones[] = new int[disponibles];
         int j = 0;
         for (int i = 0; i < contador; i++) {
             if (!soloActivos || usuarios[i].isEstado()) {
+                String Estadotexto= "";
+                if(usuarios[i].isEstado()){
+                    Estadotexto = "Activa";
+                }else{ 
+                    Estadotexto = "Inactiva";
+                }
                 opciones[j] = usuarios[i].getId() + " - " + usuarios[i].getNombre() + " " + usuarios[i].getApellido()
-                        + " (" + (usuarios[i].isEstado() ? "Activo" : "Inactivo") + ")";
+                        + " (" + Estadotexto + ")";
                 posiciones[j] = i;
                 j++;
             }
         }
 
         int seleccion = JOptionPane.showOptionDialog(null, "Seleccione el usuario:", titulo,
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
+                opciones, opciones[0]);
 
         if (seleccion == JOptionPane.CLOSED_OPTION) {
             return -1;
         }
-
         return posiciones[seleccion];
     }
 
@@ -129,13 +123,10 @@ public class UsuarioGestores {
     }
 
     public static void eliminarUsuario() {
-
-        // Aqui se muestran todos, porque es la unica forma de volver a activar uno.
         int i = seleccionarUsuario("Eliminar Usuario", false);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }
-
         cambiarEstado(i);
     }
 
@@ -145,21 +136,23 @@ public class UsuarioGestores {
         return usuario.getPassword().equals(password);
 
     }
-
-
-
-    // Eliminado logico: el usuario NO sale del arreglo, solo se le cambia el estado.
     public static void cambiarEstado(int posicion) {
 
         if (usuarioActivo != null && usuarios[posicion].getId() == usuarioActivo.getId()) {
             JOptionPane.showMessageDialog(null, "No puede cambiar el estado del usuario con el que inicio sesion.");
             return;
         }
+       String Estadoactual= "";
+       if(usuarios[posicion].isEstado()){
+           Estadoactual = "Activa";
+       }else{
+           Estadoactual = "Inactiva";
+       }
 
         String opciones[] = { "Activar", "Desactivar" };
         int seleccion = JOptionPane.showOptionDialog(null,
                 "Usuario: " + usuarios[posicion].getNombre() + " " + usuarios[posicion].getApellido() + "\n"
-                + "Estado actual: " + (usuarios[posicion].isEstado() ? "Activo" : "Inactivo") + "\n"
+                + "Estado actual: " + Estadoactual + "\n"
                 + "¿Que desea hacer?",
                 "Estado del Usuario",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);

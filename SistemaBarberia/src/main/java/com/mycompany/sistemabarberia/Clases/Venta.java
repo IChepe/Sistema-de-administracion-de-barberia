@@ -111,6 +111,13 @@ private String fechaVenta;
 
     @Override
     public String toString() {
+        String estadotexto = null;
+                if (estado){
+                    estadotexto = "Activo";
+                }else{
+                    estadotexto = "Anulada";
+                }
+                
         return "----- Venta -----" + "\n"
              + "ID: " + id + "\n"
              + "Fecha: " + fechaVenta + "\n"
@@ -121,7 +128,7 @@ private String fechaVenta;
              + "Descuento: " + descuento + "\n"
              + "Impuesto: " + impuesto + "\n"
              + "Total: " + total + "\n"
-             + "Estado: " + (estado ? "Activa" : "Anulada") + "\n";
+             + "Estado: " + estadotexto + "\n";
     }
 
 

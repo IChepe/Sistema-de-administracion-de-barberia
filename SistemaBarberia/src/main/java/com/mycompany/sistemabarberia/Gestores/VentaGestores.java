@@ -19,8 +19,6 @@ public class VentaGestores {
 
     public static void crearVenta(){
 
-        // ----- Cliente -----
-        // Primero se cuentan los activos para saber de que tamaño hacer los arreglos.
         int clientesActivos = 0;
         for (int i = 0; i < ClienteGestores.contador; i++) {
             if (ClienteGestores.clientes[i].isEstado()) {
@@ -32,7 +30,6 @@ public class VentaGestores {
             return;
         }
 
-        // Se recorre todo el arreglo para asociar cada ID con su nombre.
         String opcionesCliente[] = new String[clientesActivos];
         Cliente listaCliente[] = new Cliente[clientesActivos];
         int j = 0;
@@ -47,26 +44,28 @@ public class VentaGestores {
         }
 
         int clienteSeleccionado = JOptionPane.showOptionDialog(null, "Seleccione el cliente:", "Clientes",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcionesCliente, opcionesCliente[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
+                opcionesCliente, opcionesCliente[0]);
 
         if (clienteSeleccionado == JOptionPane.CLOSED_OPTION) {
             return;
         }
 
-        // La posicion del boton escogido es la misma posicion en la lista que se armo.
+        
         Cliente clienteVen = listaCliente[clienteSeleccionado];
 
 
         // ----- ¿Servicio o producto? -----
         String queVender[] = { "Servicio", "Producto" };
         int tipoVenta = JOptionPane.showOptionDialog(null, "¿Que desea vender?", "Tipo de Venta",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, queVender, queVender[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                queVender, queVender[0]);
 
         if (tipoVenta == JOptionPane.CLOSED_OPTION) {
             return;
         }
 
-        // Segun lo que se venda, se llena uno u otro. El que no se use queda en null.
+       
         Barbero barberoVen = null;
         Servicio servicioVen = null;
         Inventario productoVen = null;
@@ -75,8 +74,7 @@ public class VentaGestores {
 
         if (tipoVenta == 0) {
 
-            // ----- Barbero: solo se pide cuando se vende un servicio,
-            // porque un producto lo despacha cualquiera y no lleva comision -----
+           
             int barberosActivos = 0;
             for (int i = 0; i < Barberogestores.COntador; i++) {
                 if (Barberogestores.barbero[i].isEstadousuario()) {
@@ -87,7 +85,6 @@ public class VentaGestores {
                 JOptionPane.showMessageDialog(null, "No hay barberos registrados");
                 return;
             }
-
             String opcionesBarbero[] = new String[barberosActivos];
             Barbero listaBarbero[] = new Barbero[barberosActivos];
             j = 0;
@@ -108,9 +105,6 @@ public class VentaGestores {
             }
 
             barberoVen = listaBarbero[barberoSeleccionado];
-
-
-            // ----- Servicio -----
             int serviciosActivos = 0;
             for (int i = 0; i < ServicioGestores.contador; i++) {
                 if (ServicioGestores.servicios[i].isEstado()) {
@@ -136,20 +130,17 @@ public class VentaGestores {
             }
 
             int servicioSeleccionado = JOptionPane.showOptionDialog(null, "Seleccione el servicio:", "Servicios",
-                    JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcionesServicio, opcionesServicio[0]);
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
+                    opcionesServicio, opcionesServicio[0]);
 
             if (servicioSeleccionado == JOptionPane.CLOSED_OPTION) {
                 return;
             }
 
             servicioVen = listaServicio[servicioSeleccionado];
-
-            // El subtotal sale del precio del servicio, por eso la venta guarda el servicio.
             subtotalVen = servicioVen.getPrecio();
 
         } else {
-
-            // ----- Producto: solo los activos y que tengan existencias -----
             int productosActivos = 0;
             for (int i = 0; i < InventarioGestores.contador; i++) {
                 if (InventarioGestores.inventarios[i].isEstado() && InventarioGestores.inventarios[i].getStock() > 0) {
@@ -199,11 +190,11 @@ public class VentaGestores {
                 return;
             }
 
-            // El subtotal es el precio de venta por la cantidad.
+            
             subtotalVen = productoVen.getPrecioVenta() * cantidadVen;
         }
 
-        // Se piden en porcentaje y aqui se convierten a monto.
+        
         double porcentajeDescuento = Double.parseDouble(JOptionPane.showInputDialog(
                 "Ingrese el porcentaje de descuento\n(numero entero, ejemplo: 10 para un 10%)\nEscriba 0 si no lleva descuento:"));
         double porcentajeImpuesto = Double.parseDouble(JOptionPane.showInputDialog(
@@ -224,17 +215,17 @@ public class VentaGestores {
         }
         ventas = copia;
 
-        // Toda venta nueva entra activa. Si fue de un producto, el servicio queda en null.
+        
         ventas[contador - 1] = new Venta(id, servicioVen, clienteVen, barberoVen, subtotalVen,
                 descuentoVen, impuestoVen, totalVen, true, fechaVentaVen);
 
-        // Si se vendio un producto, se anota en la lista de productos vendidos
-        // y ahi mismo se le resta la cantidad al stock.
+        
         if (productoVen != null) {
-            GestorProductosVendidos.agregarProductoVendido(productoVen, ventas[contador - 1], cantidadVen);
+            GestorProductosVendidos.agregarProductoVendido(productoVen, ventas[contador - 1],
+                    cantidadVen);
         }
 
-        // Crear la venta es lo mismo que generar la factura.
+        
         generarFactura(contador - 1);
 
     }
@@ -245,11 +236,7 @@ public class VentaGestores {
         return subtotal - descuento + impuesto;
 
     }
-
-
-    // Lo que se lleva el barbero por el servicio, segun su porcentaje de comision.
-    // Si la venta fue de un producto no hay comision, porque no hizo ningun servicio.
-    public static double calcularGananciaBarbero(int posicion) {
+    public static double CalcularGananciaBarbero(int posicion) {
 
         if (ventas[posicion].getIdServicio() == null) {
             return 0;
@@ -261,13 +248,8 @@ public class VentaGestores {
         return (precioServicio * comision) / 100;
 
     }
-
-
-    // Vuelve a mostrar la factura de una venta ya registrada.
-    public static void generarFactura() {
-
-        // Solo las activas: una venta anulada no se factura.
-        int i = seleccionarVenta("Generar Factura", true);
+    public static void GenerarFactura() {
+        int i = SeleccionarVenta("Generar Factura", true);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }
@@ -278,19 +260,16 @@ public class VentaGestores {
 
 
     public static void generarFactura(int posicion) {
-
-        // El detalle cambia segun si se vendio un servicio o un producto.
-        // La venta de producto no lleva barbero, por eso esas lineas solo salen en el servicio.
         String detalle;
-        String lineaBarbero = "";
-        String lineaComision = "";
+        String LineaBarbero = "";
+        String LineaComision = "";
         if (ventas[posicion].getIdServicio() != null) {
             detalle = "Servicio: " + ventas[posicion].getIdServicio().getNombreser() + "\n"
                     + "Precio: " + ventas[posicion].getIdServicio().getPrecio() + "\n";
-            lineaBarbero = "Barbero: " + ventas[posicion].getIdBarbero().getNombre() + "\n";
-            lineaComision = "-----------------------------" + "\n"
+            LineaBarbero = "Barbero: " + ventas[posicion].getIdBarbero().getNombre() + "\n";
+            LineaComision = "-----------------------------" + "\n"
                     + "Comision del barbero: " + ventas[posicion].getIdBarbero().getComision() + " %" + "\n"
-                    + "Gana el barbero: " + calcularGananciaBarbero(posicion) + "\n";
+                    + "Gana el barbero: " + CalcularGananciaBarbero(posicion) + "\n";
         } else {
             ProductoVendido vendido = GestorProductosVendidos.buscarPorVenta(ventas[posicion].getId());
             if (vendido != null) {
@@ -301,6 +280,12 @@ public class VentaGestores {
                 detalle = "Sin detalle\n";
             }
         }
+        String Estadofact = "";
+        if (ventas[posicion].isEstado()){
+            Estadofact = "Activa";
+        }else{
+            Estadofact = "Anulada";
+        }
 
         String factura = "========== FACTURA ==========" + "\n"
                 + "Factura N°: " + ventas[posicion].getId() + "\n"
@@ -309,7 +294,7 @@ public class VentaGestores {
                 + "Cliente: " + ventas[posicion].getIdCliente().getNombre() + " "
                 + ventas[posicion].getIdCliente().getApellido() + "\n"
                 + "Telefono: " + ventas[posicion].getIdCliente().getTelefono() + "\n"
-                + lineaBarbero
+                + LineaBarbero
                 + "-----------------------------" + "\n"
                 + detalle
                 + "-----------------------------" + "\n"
@@ -317,15 +302,13 @@ public class VentaGestores {
                 + "Descuento: " + ventas[posicion].getDescuento() + "\n"
                 + "Impuesto: " + ventas[posicion].getImpuesto() + "\n"
                 + "TOTAL: " + ventas[posicion].getTotal() + "\n"
-                + lineaComision
+                + LineaComision
                 + "=============================" + "\n"
-                + "Estado: " + (ventas[posicion].isEstado() ? "Activa" : "ANULADA");
+                + "Estado: " + Estadofact;
 
         JOptionPane.showMessageDialog(null, factura);
 
     }
-
-
     public static void consultarVentas() {
 
         if (contador == 0) {
@@ -334,7 +317,6 @@ public class VentaGestores {
             String mensaje = "Ventas registradas:\n";
             int activas = 0;
             for (int i = 0; i < contador; i++) {
-                // Solo se muestran las que no estan anuladas.
                 if (ventas[i] != null && ventas[i].isEstado()) {
                     mensaje += ventas[i].toString() + "\n";
                     activas++;
@@ -348,13 +330,9 @@ public class VentaGestores {
         }
 
     }
+    public static int SeleccionarVenta(String titulo, boolean soloActivas) {
 
-
-    // Recorre el arreglo y muestra todas las ventas registradas para escoger una,
-    // asi no hay que aprenderse los ID. Devuelve la posicion, o -1 si se cierra.
-    public static int seleccionarVenta(String titulo, boolean soloActivas) {
-
-        // Primero se cuentan las que se van a mostrar.
+        
         int disponibles = 0;
         for (int i = 0; i < contador; i++) {
             if (!soloActivas || ventas[i].isEstado()) {
@@ -367,15 +345,21 @@ public class VentaGestores {
             return -1;
         }
 
-        // El arreglo posiciones guarda en que lugar del arreglo original quedo cada opcion.
+        
         String opciones[] = new String[disponibles];
         int posiciones[] = new int[disponibles];
         int j = 0;
         for (int i = 0; i < contador; i++) {
             if (!soloActivas || ventas[i].isEstado()) {
+               String estadotexto = "";
+                if (ventas[i].isEstado()){
+                    estadotexto = "Activo";
+                }else{
+                    estadotexto = "Anulada";
+                }
                 opciones[j] = ventas[i].getId() + " - " + ventas[i].getIdCliente().getNombre()
                         + " - " + ventas[i].getTotal()
-                        + " (" + (ventas[i].isEstado() ? "Activa" : "Anulada") + ")";
+                        + " (" + estadotexto + ")";
                 posiciones[j] = i;
                 j++;
             }
@@ -390,12 +374,8 @@ public class VentaGestores {
 
         return posiciones[seleccion];
     }
-
-
     public static void anularVenta() {
-
-        // Aqui se muestran todas, porque es la unica forma de volver a activar una.
-        int i = seleccionarVenta("Anular Venta", false);
+        int i = SeleccionarVenta("Anular Venta", false);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }
@@ -404,16 +384,20 @@ public class VentaGestores {
 
     }
 
-
-    // Anulado logico: la venta NO sale del arreglo, solo se le cambia el estado.
     public static void cambiarEstado(int posicion) {
 
+        String estadoactual = "";
+        if(ventas[posicion].isEstado()){
+            estadoactual = "Activo";
+        }else{
+            estadoactual = "Anulada";
+        }
         String opciones[] = { "Activar", "Anular" };
         int seleccion = JOptionPane.showOptionDialog(null,
                 "Venta N°: " + ventas[posicion].getId() + "\n"
                 + "Cliente: " + ventas[posicion].getIdCliente().getNombre() + "\n"
                 + "Total: " + ventas[posicion].getTotal() + "\n"
-                + "Estado actual: " + (ventas[posicion].isEstado() ? "Activa" : "Anulada") + "\n"
+                + "Estado actual: " + estadoactual + "\n"
                 + "¿Que desea hacer?",
                 "Estado de la Venta",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
