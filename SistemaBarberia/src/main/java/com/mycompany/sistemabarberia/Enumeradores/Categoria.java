@@ -14,7 +14,6 @@ public enum Categoria {
     Toalla,
     Guantes,
     Mascarilla,
-    Desinfectante,
     Alcohol,
     Jabón,
     Cepillo,

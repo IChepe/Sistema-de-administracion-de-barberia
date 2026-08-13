@@ -23,8 +23,6 @@ public class ReporteGestores {
         if (tipoRep == null) {
             return;
         }
-
-        // Segun el tipo se llena uno u otro. Los que no se usen quedan en null.
         Inventario inventarioRep = null;
         Venta ventaRep = null;
         Citas citaRep = null;
@@ -32,7 +30,6 @@ public class ReporteGestores {
 
         if (tipoRep == Tipo.Venta) {
 
-            // Se reutiliza la lista que ya tiene el gestor de ventas.
             int posicion = VentaGestores.SeleccionarVenta("Reporte de Venta", true);
             if (posicion == JOptionPane.CLOSED_OPTION) {
                 return;
@@ -50,9 +47,8 @@ public class ReporteGestores {
             clienteRep = citaRep.getCliente();
 
         } else {
-
-            // Producto e Inventario los dos apuntan a un producto del inventario.
-            int posicion = InventarioGestores.seleccionarInventario("Reporte de " + tipoRep, true);
+            int posicion = InventarioGestores.seleccionarInventario("Reporte de " 
+                    + tipoRep, true);
             if (posicion == JOptionPane.CLOSED_OPTION) {
                 return;
             }
@@ -70,22 +66,21 @@ public class ReporteGestores {
         }
         reportes = copia;
 
-        // Todo reporte nuevo entra activo.
-        reportes[contador - 1] = new Reporte(id, tipoRep, inventarioRep, ventaRep, citaRep, clienteRep, true);
+        reportes[contador - 1] = new Reporte(id, tipoRep, inventarioRep, ventaRep,
+                citaRep, clienteRep, true);
 
-        // Al crearlo se muestra de una vez.
         generar(contador - 1);
 
     }
 
 
-    // El tipo sale del enum, no se escribe a mano.
     public static Tipo seleccionarTipo() {
 
-        Tipo opciones[] = Tipo.values();
+        Tipo opciones[] = {Tipo.Venta, Tipo.Cita, Tipo.Producto, Tipo.Inventario};
 
         int seleccion = JOptionPane.showOptionDialog(null, "¿Que tipo de reporte desea generar?", "Tipo de Reporte",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                opciones, opciones[0]);
 
         if (seleccion == JOptionPane.CLOSED_OPTION) {
             return null;
@@ -95,7 +90,6 @@ public class ReporteGestores {
     }
 
 
-    // Arma el texto del reporte segun el tipo y lo muestra.
     public static void generar(int posicion) {
 
         String mensaje = "";
@@ -104,6 +98,21 @@ public class ReporteGestores {
 
             case Venta:
                 Venta laVenta = reportes[posicion].getIdVenta();
+                String Vendido = "";
+                if (laVenta.isEstado()){
+                    Vendido = laVenta.getIdServicio().getNombreser();
+                }else{
+                    Vendido = "Producto";
+                }
+                
+                
+                String Estadoventa = "";
+                if (laVenta.isEstado()){
+                    Estadoventa = "Activo";
+                }else{
+                    Estadoventa = "Anulada";
+                }
+                
                 mensaje = "===== Reporte de Venta =====" + "\n"
                         + "Reporte N°: " + reportes[posicion].getId() + "\n"
                         + "-----------------------------" + "\n"
@@ -111,13 +120,12 @@ public class ReporteGestores {
                         + "Fecha: " + laVenta.getFechaVenta() + "\n"
                         + "Cliente: " + laVenta.getIdCliente().getNombre() + " "
                         + laVenta.getIdCliente().getApellido() + "\n"
-                        + "Vendio: " + (laVenta.getIdServicio() != null
-                                ? laVenta.getIdServicio().getNombreser() : "Producto") + "\n"
+                        + "Vendio: " + Vendido + "\n"
                         + "Subtotal: " + laVenta.getSubtotal() + "\n"
                         + "Descuento: " + laVenta.getDescuento() + "\n"
                         + "Impuesto: " + laVenta.getImpuesto() + "\n"
                         + "Total: " + laVenta.getTotal() + "\n"
-                        + "Estado: " + (laVenta.isEstado() ? "Activa" : "Anulada") + "\n";
+                        + "Estado: " + Estadoventa + "\n";
                 break;
 
             case Cita:
@@ -152,6 +160,12 @@ public class ReporteGestores {
 
             case Inventario:
                 Inventario enBodega = reportes[posicion].getIdInventario();
+                   String Estadostock= "";
+                if(enBodega.getStock() <= enBodega.getStockMinimo()){
+                    Estadostock = "Hay que reabastecer el stock";
+                }else{ 
+                    Estadostock = "Stock suficiente";
+                }
                 mensaje = "===== Reporte de Inventario =====" + "\n"
                         + "Reporte N°: " + reportes[posicion].getId() + "\n"
                         + "-----------------------------" + "\n"
@@ -160,8 +174,7 @@ public class ReporteGestores {
                         + "Stock minimo: " + enBodega.getStockMinimo() + "\n"
                         + "Valor en bodega: " + (enBodega.getStock() * enBodega.getPrecioCompra()) + "\n"
                         + "-----------------------------" + "\n"
-                        + (enBodega.getStock() <= enBodega.getStockMinimo()
-                                ? "HAY QUE REABASTECER" : "Stock suficiente") + "\n";
+                        + Estadostock + "\n";
                 break;
         }
 
@@ -170,7 +183,6 @@ public class ReporteGestores {
     }
 
 
-    // Dice a que registro apunta el reporte, para listarlo sin imprimir el objeto entero.
     public static String sobreQue(int posicion) {
 
         switch (reportes[posicion].getTipos()) {
@@ -196,7 +208,6 @@ public class ReporteGestores {
             String mensaje = "Reportes registrados:\n";
             int activos = 0;
             for (int i = 0; i < contador; i++) {
-                // Solo se muestran los que tienen el estado en true.
                 if (reportes[i] != null && reportes[i].isEstado()) {
                     mensaje += "\n----- Reporte " + reportes[i].getId() + " -----"
                             + "\nTipo: " + reportes[i].getTipos()
@@ -214,12 +225,8 @@ public class ReporteGestores {
     }
 
 
-    // Recorre el arreglo y muestra los reportes para escoger uno, asi no hay que
-    // aprenderse los ID. Con soloActivos en true se saltan los desactivados.
-    // Devuelve la posicion real dentro del arreglo, o -1 si se cierra.
     public static int seleccionarReporte(String titulo, boolean soloActivos) {
 
-        // Primero se cuentan los que se van a mostrar.
         int disponibles = 0;
         for (int i = 0; i < contador; i++) {
             if (!soloActivos || reportes[i].isEstado()) {
@@ -232,22 +239,28 @@ public class ReporteGestores {
             return -1;
         }
 
-        // El arreglo posiciones guarda en que lugar del arreglo original quedo cada opcion.
         String opciones[] = new String[disponibles];
         int posiciones[] = new int[disponibles];
         int j = 0;
         for (int i = 0; i < contador; i++) {
             if (!soloActivos || reportes[i].isEstado()) {
+                String Estadotexto= "";
+                if(reportes[i].isEstado()){
+                    Estadotexto = "Activa";
+                }else{ 
+                    Estadotexto = "Inactiva";
+                }
                 opciones[j] = reportes[i].getId() + " - " + reportes[i].getTipos()
                         + " - " + sobreQue(i)
-                        + " (" + (reportes[i].isEstado() ? "Activo" : "Inactivo") + ")";
+                        + " (" + Estadotexto + ")";
                 posiciones[j] = i;
                 j++;
             }
         }
 
         int seleccion = JOptionPane.showOptionDialog(null, "Seleccione el reporte:", titulo,
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
+                opciones, opciones[0]);
 
         if (seleccion == JOptionPane.CLOSED_OPTION) {
             return -1;
@@ -257,23 +270,16 @@ public class ReporteGestores {
     }
 
 
-    // Vuelve a mostrar un reporte ya guardado.
     public static void generar() {
 
-        // Solo los activos: un reporte desactivado no se muestra.
         int i = seleccionarReporte("Ver Reporte", true);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
         }
-
         generar(i);
-
     }
-
-
     public static void eliminarReporte() {
 
-        // Aqui se muestran todos, porque es la unica forma de volver a activar uno.
         int i = seleccionarReporte("Eliminar Reporte", false);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
@@ -283,18 +289,24 @@ public class ReporteGestores {
     }
 
 
-    // Eliminado logico: el reporte NO sale del arreglo, solo se le cambia el estado.
     public static void cambiarEstado(int posicion) {
+         String Estadoactual = "";
+        if (reportes[posicion].isEstado()){
+            Estadoactual = "Activo";
+        }else{
+            Estadoactual = "Inactivo";
+        }
 
         String opciones[] = { "Activar", "Desactivar" };
         int seleccion = JOptionPane.showOptionDialog(null,
                 "Reporte N°: " + reportes[posicion].getId() + "\n"
                 + "Tipo: " + reportes[posicion].getTipos() + "\n"
                 + "Sobre: " + sobreQue(posicion) + "\n"
-                + "Estado actual: " + (reportes[posicion].isEstado() ? "Activo" : "Inactivo") + "\n"
+                + "Estado actual: " + Estadoactual + "\n"
                 + "¿Que desea hacer?",
                 "Estado del Reporte",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                opciones, opciones[0]);
 
         if (seleccion == JOptionPane.CLOSED_OPTION) {
             return;

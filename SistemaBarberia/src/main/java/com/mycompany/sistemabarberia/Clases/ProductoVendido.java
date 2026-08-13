@@ -73,10 +73,22 @@ public class ProductoVendido {
 
     @Override
     public String toString() {
+        String nombreproducto = "";
+        if(inventario != null){
+            nombreproducto = inventario.getNombre();
+        }else{
+            nombreproducto = "Sin aignar";
+        }
+        int idventa = 0;
+        if(venta != null){
+            idventa = venta.getId();
+        }else{
+            idventa = 0;
+        }
         return "----- Producto Vendido -----" + "\n"
              + "ID: " + id + "\n"
-             + "Producto: " + (inventario != null ? inventario.getNombre() : "Sin asignar") + "\n"
-             + "Venta N°: " + (venta != null ? venta.getId() : 0) + "\n"
+             + "Producto: " + nombreproducto + "\n"
+             + "Venta N°: " + idventa + "\n"
              + "Cantidad: " + cantidad + "\n"
              + "Precio unitario: " + precioUnitario + "\n"
              + "Subtotal: " + subtotal + "\n";

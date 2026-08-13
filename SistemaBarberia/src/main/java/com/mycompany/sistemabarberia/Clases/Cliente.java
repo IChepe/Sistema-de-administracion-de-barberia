@@ -102,6 +102,12 @@ private boolean estado;
 
     @Override
     public String toString() {
+        String estadotexto = null;
+                if (estado){
+                    estadotexto = "Activo";
+                }else{
+                    estadotexto = "Anulada";
+                }
         return "----- Cliente -----" + "\n"
              + "ID: " + id + "\n"
              + "Nombre: " + nombre + " " + apellido + "\n"
@@ -110,7 +116,7 @@ private boolean estado;
              + "Fecha de nacimiento: " + fechaNacimiento + "\n"
              + "Fecha de registro: " + fechaRegistro + "\n"
              + "Notas: " + notas + "\n"
-             + "Estado: " + (estado ? "Activo" : "Inactivo") + "\n";
+             + "Estado: " + estadotexto + "\n";
     }
 
 

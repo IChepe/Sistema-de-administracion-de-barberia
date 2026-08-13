@@ -32,8 +32,9 @@ public class ClienteGestores {
         }
         clientes = copia;
 
-        // Todo cliente nuevo entra activo.
-        clientes[contador - 1] = new Cliente(id, nombreCli, apellidoCli, telefonoCli, correoCli, fechaNacimientoCli, fechaRegistroCli, notasCli, true);
+
+        clientes[contador - 1] = new Cliente(id, nombreCli, apellidoCli, telefonoCli,
+                correoCli, fechaNacimientoCli, fechaRegistroCli, notasCli, true);
 
 
     }
@@ -47,9 +48,8 @@ public class ClienteGestores {
             String mensaje = "Clientes registrados:\n";
             int activos = 0;
             for (int i = 0; i < contador; i++) {
-                // Solo se muestran los que tienen el estado en true.
                 if (clientes[i] != null && clientes[i].isEstado()) {
-                    mensaje += clientes[i].toString() + "\n";
+                    mensaje = mensaje + clientes[i].toString() + "\n";
                     activos++;
                 }
             }
@@ -63,11 +63,7 @@ public class ClienteGestores {
 
     }
 
-    // Recorre el arreglo y muestra todos los clientes registrados para escoger uno,
-    // asi no hay que aprenderse los ID. Devuelve la posicion, o -1 si se cierra.
     public static int seleccionarCliente(String titulo, boolean soloActivos) {
-
-        // Primero se cuentan los que se van a mostrar.
         int disponibles = 0;
         for (int i = 0; i < contador; i++) {
             if (!soloActivos || clientes[i].isEstado()) {
@@ -80,21 +76,29 @@ public class ClienteGestores {
             return -1;
         }
 
-        // El arreglo posiciones guarda en que lugar del arreglo original quedo cada opcion.
         String opciones[] = new String[disponibles];
         int posiciones[] = new int[disponibles];
         int j = 0;
         for (int i = 0; i < contador; i++) {
             if (!soloActivos || clientes[i].isEstado()) {
+                
+                   String Estadotexto= "";
+                if(clientes[i].isEstado()){
+                    Estadotexto = "Activa";
+                }else{ 
+                    Estadotexto = "Inactiva";
+                }
+                
                 opciones[j] = clientes[i].getId() + " - " + clientes[i].getNombre() + " " + clientes[i].getApellido()
-                        + " (" + (clientes[i].isEstado() ? "Activo" : "Inactivo") + ")";
+                        + " (" + Estadotexto + ")";
                 posiciones[j] = i;
                 j++;
             }
         }
 
         int seleccion = JOptionPane.showOptionDialog(null, "Seleccione el cliente:", titulo,
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
+                opciones, opciones[0]);
 
         if (seleccion == JOptionPane.CLOSED_OPTION) {
             return -1;
@@ -123,7 +127,6 @@ public class ClienteGestores {
 
     public static void eliminarCliente() {
 
-        // Aqui se muestran todos, porque es la unica forma de volver a activar uno.
         int i = seleccionarCliente("Eliminar Cliente", false);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
@@ -133,16 +136,23 @@ public class ClienteGestores {
     }
 
 
-    // Eliminado logico: el cliente NO sale del arreglo, solo se le cambia el estado.
     public static void cambiarEstado(int posicion) {
+        
+         String Estadoactual = "";
+        if (clientes[posicion].isEstado()){
+            Estadoactual = "Activo";
+        }else{
+            Estadoactual = "Inactivo";
+        }
 
         String opciones[] = { "Activar", "Desactivar" };
         int seleccion = JOptionPane.showOptionDialog(null,
                 "Cliente: " + clientes[posicion].getNombre() + " " + clientes[posicion].getApellido() + "\n"
-                + "Estado actual: " + (clientes[posicion].isEstado() ? "Activo" : "Inactivo") + "\n"
+                + "Estado actual: " + Estadoactual + "\n"
                 + "¿Que desea hacer?",
                 "Estado del Cliente",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                opciones, opciones[0]);
 
         if (seleccion == JOptionPane.CLOSED_OPTION) {
             return;
@@ -150,10 +160,10 @@ public class ClienteGestores {
 
         if (seleccion == 0) {
             clientes[posicion].setEstado(true);
-            JOptionPane.showMessageDialog(null, "Cliente activado correctamente.");
+            JOptionPane.showMessageDialog(null, "Cliente activado correctamente");
         } else {
             clientes[posicion].setEstado(false);
-            JOptionPane.showMessageDialog(null, "Cliente desactivado correctamente.");
+            JOptionPane.showMessageDialog(null, "Cliente desactivado correctamente");
         }
 
     }

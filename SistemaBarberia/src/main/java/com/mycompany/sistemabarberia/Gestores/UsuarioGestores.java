@@ -50,7 +50,7 @@ public class UsuarioGestores {
             int activos = 0;
             for (int i = 0; i < contador; i++) {
                 if (usuarios[i] != null && usuarios[i].isEstado()) {
-                    mensaje += usuarios[i].toString() + "\n";
+                    mensaje = mensaje + usuarios[i].toString() + "\n";
                     activos++;
                 }
             }
@@ -86,7 +86,8 @@ public class UsuarioGestores {
                 }else{ 
                     Estadotexto = "Inactiva";
                 }
-                opciones[j] = usuarios[i].getId() + " - " + usuarios[i].getNombre() + " " + usuarios[i].getApellido()
+                opciones[j] = usuarios[i].getId() + " - " + usuarios[i].getNombre() 
+                        + " " + usuarios[i].getApellido()
                         + " (" + Estadotexto + ")";
                 posiciones[j] = i;
                 j++;
@@ -155,7 +156,8 @@ public class UsuarioGestores {
                 + "Estado actual: " + Estadoactual + "\n"
                 + "¿Que desea hacer?",
                 "Estado del Usuario",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                opciones, opciones[0]);
 
         if (seleccion == JOptionPane.CLOSED_OPTION) {
             return;
@@ -163,10 +165,10 @@ public class UsuarioGestores {
 
         if (seleccion == 0) {
             usuarios[posicion].setEstado(true);
-            JOptionPane.showMessageDialog(null, "Usuario activado correctamente.");
+            JOptionPane.showMessageDialog(null, "Usuario activado correctamente");
         } else {
             usuarios[posicion].setEstado(false);
-            JOptionPane.showMessageDialog(null, "Usuario desactivado correctamente.");
+            JOptionPane.showMessageDialog(null, "Usuario desactivado correctamente");
         }
 
     }

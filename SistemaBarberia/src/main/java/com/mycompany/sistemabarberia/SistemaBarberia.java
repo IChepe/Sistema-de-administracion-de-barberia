@@ -280,7 +280,7 @@ public class SistemaBarberia {
                                 VentaGestores.anularVenta();
                                 break;
                             case 3:
-                                VentaGestores.generarFactura();
+                                VentaGestores.GenerarFactura();
                                 break;
                             case 4:
                                 // Regresar al menú principal

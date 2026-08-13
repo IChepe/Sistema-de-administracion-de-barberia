@@ -91,12 +91,19 @@ private String fechaRegistro;
 
     @Override
     public String toString() {
+        
+        String estadotexto = null;
+                if (estado){
+                    estadotexto = "Activo";
+                }else{
+                    estadotexto = "Anulada";
+                }
         return "----- Usuario -----" + "\n"
              + "ID: " + id + "\n"
              + "Nombre: " + nombre + " " + apellido + "\n"
              + "Email: " + email + "\n"
              + "Rol: " + rol + "\n"
-             + "Estado: " + (estado ? "Activo" : "Inactivo") + "\n"
+             + "Estado: " + estadotexto  + "\n"
              + "Fecha de registro: " + fechaRegistro + "\n";
     }
 

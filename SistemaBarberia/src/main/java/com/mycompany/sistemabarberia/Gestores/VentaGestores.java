@@ -55,7 +55,6 @@ public class VentaGestores {
         Cliente clienteVen = listaCliente[clienteSeleccionado];
 
 
-        // ----- ¿Servicio o producto? -----
         String queVender[] = { "Servicio", "Producto" };
         int tipoVenta = JOptionPane.showOptionDialog(null, "¿Que desea vender?", "Tipo de Venta",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,

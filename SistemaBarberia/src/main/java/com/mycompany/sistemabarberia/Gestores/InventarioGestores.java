@@ -34,7 +34,6 @@ public class InventarioGestores {
         }
         inventarios = copia;
 
-        // Todo producto nuevo entra activo.
         inventarios[contador - 1] = new Inventario(id, nombreInv, descripcionInv, categoriaInv, stockInv,
                 stockMinimoInv, precioCompraInv, precioVentaInv, unidadMedidaInv, true);
 
@@ -42,13 +41,16 @@ public class InventarioGestores {
     }
 
 
-    // La categoria sale del enum, no se escribe a mano.
     public static Categoria seleccionarCategoria() {
 
-        Categoria opciones[] = Categoria.values();
+        Categoria opciones[] = {Categoria.Shampoo, Categoria.Acondicionador, Categoria.Cera,
+          Categoria.Gel, Categoria.Crema, Categoria.Maquina, Categoria.Navaja, Categoria.Tijera,
+          Categoria.Peine, Categoria.Brocha, Categoria.Toalla, Categoria.Guantes, Categoria.Mascarilla,
+          Categoria.Alcohol, Categoria.Jabón, Categoria.Cepillo, Categoria.Secador, Categoria.Plancha};
 
         int seleccion = JOptionPane.showOptionDialog(null, "Seleccione la categoria:", "Categoria",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
+                opciones, opciones[0]);
 
         if (seleccion == JOptionPane.CLOSED_OPTION) {
             return opciones[0];
@@ -66,9 +68,8 @@ public class InventarioGestores {
             String mensaje = "Productos registrados:\n";
             int activos = 0;
             for (int i = 0; i < contador; i++) {
-                // Solo se muestran los que tienen el estado en true.
                 if (inventarios[i] != null && inventarios[i].isEstado()) {
-                    mensaje += inventarios[i].toString() + "\n";
+                    mensaje = mensaje + inventarios[i].toString() + "\n";
                     activos++;
                 }
             }
@@ -82,11 +83,8 @@ public class InventarioGestores {
     }
 
 
-    // Recorre el arreglo y muestra todos los productos registrados para escoger uno,
-    // asi no hay que aprenderse los ID. Devuelve la posicion, o -1 si se cierra.
     public static int seleccionarInventario(String titulo, boolean soloActivos) {
 
-        // Primero se cuentan los que se van a mostrar.
         int disponibles = 0;
         for (int i = 0; i < contador; i++) {
             if (!soloActivos || inventarios[i].isEstado()) {
@@ -99,21 +97,27 @@ public class InventarioGestores {
             return -1;
         }
 
-        // El arreglo posiciones guarda en que lugar del arreglo original quedo cada opcion.
         String opciones[] = new String[disponibles];
         int posiciones[] = new int[disponibles];
         int j = 0;
         for (int i = 0; i < contador; i++) {
             if (!soloActivos || inventarios[i].isEstado()) {
+                String Estadotexto = "";
+                if (inventarios[i].isEstado()){
+                    Estadotexto = "Activo";
+                }else{
+                    Estadotexto = "Inactivo";
+                }
                 opciones[j] = inventarios[i].getId() + " - " + inventarios[i].getNombre()
-                        + " (" + (inventarios[i].isEstado() ? "Activo" : "Inactivo") + ")";
+                        + " (" + Estadotexto + ")";
                 posiciones[j] = i;
                 j++;
             }
         }
 
         int seleccion = JOptionPane.showOptionDialog(null, "Seleccione el producto:", titulo,
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
+                opciones, opciones[0]);
 
         if (seleccion == JOptionPane.CLOSED_OPTION) {
             return -1;
@@ -139,14 +143,14 @@ public class InventarioGestores {
         double nuevoPrecioVenta = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo precio de venta:"));
         String nuevaUnidadMedida = JOptionPane.showInputDialog("Ingrese la nueva unidad de medida:");
         inventarios[i] = new Inventario(inventarios[i].getId(), nuevoNombre, nuevaDescripcion, nuevaCategoria,
-                nuevoStock, nuevoStockMinimo, nuevoPrecioCompra, nuevoPrecioVenta, nuevaUnidadMedida, inventarios[i].isEstado());
+                nuevoStock, nuevoStockMinimo, nuevoPrecioCompra,
+                nuevoPrecioVenta, nuevaUnidadMedida, inventarios[i].isEstado());
         JOptionPane.showMessageDialog(null, "Producto editado correctamente.");
     }
 
 
     public static void eliminarInventario() {
 
-        // Aqui se muestran todos, porque es la unica forma de volver a activar uno.
         int i = seleccionarInventario("Eliminar Producto", false);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
@@ -156,16 +160,22 @@ public class InventarioGestores {
     }
 
 
-    // Eliminado logico: el producto NO sale del arreglo, solo se le cambia el estado.
     public static void cambiarEstado(int posicion) {
+         String Estadoactual = "";
+        if (inventarios[posicion].isEstado()){
+            Estadoactual = "Activo";
+        }else{
+            Estadoactual = "Inactivo";
+        }
 
         String opciones[] = { "Activar", "Desactivar" };
         int seleccion = JOptionPane.showOptionDialog(null,
                 "Producto: " + inventarios[posicion].getNombre() + "\n"
-                + "Estado actual: " + (inventarios[posicion].isEstado() ? "Activo" : "Inactivo") + "\n"
+                + "Estado actual: " + Estadoactual + "\n"
                 + "¿Que desea hacer?",
                 "Estado del Producto",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                opciones, opciones[0]);
 
         if (seleccion == JOptionPane.CLOSED_OPTION) {
             return;
@@ -182,7 +192,6 @@ public class InventarioGestores {
     }
 
 
-    // Muestra los productos que ya llegaron al stock minimo.
     public static void consultarStockBajo() {
 
         if (contador == 0) {

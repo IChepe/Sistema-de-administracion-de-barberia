@@ -83,13 +83,21 @@ public class Servicio {
 
     @Override
     public String toString() {
+        
+        String estadotexto = null;
+                if (estado){
+                    estadotexto = "Activo";
+                }else{
+                    estadotexto = "Anulada";
+                }
+                
         return "----- Servicio -----" + "\n"
              + "ID: " + idServicio + "\n"
              + "Nombre: " + Nombreser + "\n"
              + "Precio: " + precio + "\n"
              + "Duracion estimada: " + Duracionest + " min" + "\n"
              + "Categoria: " + categoria + "\n"
-             + "Estado: " + (estado ? "Activo" : "Inactivo") + "\n";
+             + "Estado: " + estadotexto + "\n";
     }
     
     

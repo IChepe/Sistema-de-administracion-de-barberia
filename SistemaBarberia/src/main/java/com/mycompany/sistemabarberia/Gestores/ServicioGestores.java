@@ -29,8 +29,9 @@ public class ServicioGestores {
         }
         servicios = copia;
 
-        // Todo servicio nuevo entra activo.
-        servicios[contador - 1] = new Servicio(id, nombreSer, precioSer, duracionSer, categoriaSer, true);
+        
+        servicios[contador - 1] = new Servicio(id, nombreSer, precioSer,
+                duracionSer, categoriaSer, true);
 
 
     }
@@ -44,9 +45,8 @@ public class ServicioGestores {
             String mensaje = "Servicios registrados:\n";
             int activos = 0;
             for (int i = 0; i < contador; i++) {
-                // Solo se muestran los que tienen el estado en true.
                 if (servicios[i] != null && servicios[i].isEstado()) {
-                    mensaje += servicios[i].toString() + "\n";
+                    mensaje = mensaje + servicios[i].toString() + "\n";
                     activos++;
                 }
             }
@@ -60,11 +60,8 @@ public class ServicioGestores {
 
     }
 
-    // Recorre el arreglo y muestra todos los servicios registrados para escoger uno,
-    // asi no hay que aprenderse los ID. Devuelve la posicion, o -1 si se cierra.
     public static int seleccionarServicio(String titulo, boolean soloActivos) {
 
-        // Primero se cuentan los que se van a mostrar.
         int disponibles = 0;
         for (int i = 0; i < contador; i++) {
             if (!soloActivos || servicios[i].isEstado()) {
@@ -77,21 +74,28 @@ public class ServicioGestores {
             return -1;
         }
 
-        // El arreglo posiciones guarda en que lugar del arreglo original quedo cada opcion.
         String opciones[] = new String[disponibles];
         int posiciones[] = new int[disponibles];
         int j = 0;
         for (int i = 0; i < contador; i++) {
             if (!soloActivos || servicios[i].isEstado()) {
-                opciones[j] = servicios[i].getIdServicio() + " - " + servicios[i].getNombreser()
-                        + " (" + (servicios[i].isEstado() ? "Activo" : "Inactivo") + ")";
+                String Estadotexto= "";
+                if(servicios[i].isEstado()){
+                    Estadotexto = "Activa";
+                }else{ 
+                    Estadotexto = "Inactiva";
+                }
+                opciones[j] = servicios[i].getIdServicio() + " - " 
+                        + servicios[i].getNombreser()
+                        + " (" + Estadotexto + ")";
                 posiciones[j] = i;
                 j++;
             }
         }
 
         int seleccion = JOptionPane.showOptionDialog(null, "Seleccione el servicio:", titulo,
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
+                opciones, opciones[0]);
 
         if (seleccion == JOptionPane.CLOSED_OPTION) {
             return -1;
@@ -111,13 +115,13 @@ public class ServicioGestores {
         double nuevoPrecio = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el nuevo precio del servicio:"));
         int nuevaDuracion = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la nueva duración del servicio:"));
         String nuevaCategoria = JOptionPane.showInputDialog("Ingrese la nueva categoría del servicio:");
-        servicios[i] = new Servicio(servicios[i].getIdServicio(), nuevoNombre, nuevoPrecio, nuevaDuracion, nuevaCategoria, servicios[i].isEstado());
+        servicios[i] = new Servicio(servicios[i].getIdServicio(), nuevoNombre, nuevoPrecio,
+                nuevaDuracion, nuevaCategoria, servicios[i].isEstado());
         JOptionPane.showMessageDialog(null, "Servicio editado correctamente.");
     }
 
     public static void eliminarServicio() {
 
-        // Aqui se muestran todos, porque es la unica forma de volver a activar uno.
         int i = seleccionarServicio("Eliminar Servicio", false);
         if (i == JOptionPane.CLOSED_OPTION) {
             return;
@@ -126,17 +130,22 @@ public class ServicioGestores {
         cambiarEstado(i);
     }
 
-
-    // Eliminado logico: el servicio NO sale del arreglo, solo se le cambia el estado.
     public static void cambiarEstado(int posicion) {
+        String Estadoactual = "";
+        if (servicios[posicion].isEstado()){
+            Estadoactual = "Activo";
+        }else{
+            Estadoactual = "Inactivo";
+        }
 
         String opciones[] = { "Activar", "Desactivar" };
         int seleccion = JOptionPane.showOptionDialog(null,
                 "Servicio: " + servicios[posicion].getNombreser() + "\n"
-                + "Estado actual: " + (servicios[posicion].isEstado() ? "Activo" : "Inactivo") + "\n"
+                + "Estado actual: " + Estadoactual + "\n"
                 + "¿Que desea hacer?",
                 "Estado del Servicio",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                opciones, opciones[0]);
 
         if (seleccion == JOptionPane.CLOSED_OPTION) {
             return;

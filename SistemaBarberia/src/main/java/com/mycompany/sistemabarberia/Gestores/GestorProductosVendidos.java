@@ -18,8 +18,6 @@ public class GestorProductosVendidos {
 
 
 
-    // Guarda que producto se vendio, en cual venta y cuanta cantidad,
-    // y le resta esa cantidad al stock del inventario.
     public static void agregarProductoVendido(Inventario inventario, Venta venta, int cantidad) {
 
         contador++;
@@ -35,7 +33,6 @@ public class GestorProductosVendidos {
 
         productosVendidos[contador - 1] = new ProductoVendido(id, inventario, venta, cantidad, precioUnitario);
 
-        // Se descuenta del stock lo que se acaba de vender.
         inventario.setStock(inventario.getStock() - cantidad);
 
         if (inventario.getStock() <= inventario.getStockMinimo()) {
@@ -55,7 +52,7 @@ public class GestorProductosVendidos {
             String mensaje = "Productos vendidos:\n";
             for (int i = 0; i < contador; i++) {
                 if (productosVendidos[i] != null) {
-                    mensaje += productosVendidos[i].toString() + "\n";
+                    mensaje = mensaje + productosVendidos[i].toString() + "\n";
                 }
             }
             JOptionPane.showMessageDialog(null, mensaje);
@@ -64,7 +61,6 @@ public class GestorProductosVendidos {
     }
 
 
-    // Devuelve el producto vendido de una venta, o null si esa venta fue de un servicio.
     public static ProductoVendido buscarPorVenta(int idVenta) {
 
         for (int i = 0; i < contador; i++) {
@@ -77,7 +73,6 @@ public class GestorProductosVendidos {
     }
 
 
-    // Suma el subtotal de todos los productos vendidos.
     public static void calcularTotalGeneral() {
 
         if (contador == 0) {

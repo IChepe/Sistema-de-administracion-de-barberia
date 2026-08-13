@@ -114,6 +114,13 @@ public class Inventario {
 
     @Override
     public String toString() {
+        String estadotexto = null;
+                if (estado){
+                    estadotexto = "Activo";
+                }else{
+                    estadotexto = "Anulada";
+                }
+                
         return "----- Producto -----" + "\n"
              + "ID: " + id + "\n"
              + "Nombre: " + nombre + "\n"
@@ -123,7 +130,7 @@ public class Inventario {
              + "Stock minimo: " + stockMinimo + "\n"
              + "Precio de compra: " + precioCompra + "\n"
              + "Precio de venta: " + precioVenta + "\n"
-             + "Estado: " + (estado ? "Activo" : "Inactivo") + "\n";
+             + "Estado: " + estadotexto + "\n";
     }
 
 }

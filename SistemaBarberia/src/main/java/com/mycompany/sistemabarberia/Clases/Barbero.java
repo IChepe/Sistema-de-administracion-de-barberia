@@ -150,6 +150,12 @@ private boolean estadousuario;
 
     @Override
     public String toString() {
+        String estadotexto = null;
+                if (estadousuario){
+                    estadotexto = "Activo";
+                }else{
+                    estadotexto = "Anulada";
+                }
         return "Barbero" 
              + "\n\nID: " + id
              + "\nNombre: " + nombre 
@@ -159,7 +165,7 @@ private boolean estadousuario;
              + "\nHorario del barbero: " + getBloquesTexto()
              + "\nComisión del barbero: " + comision 
              + "\nEstado: " + estado 
-             + "\nEstado del usuario: " + (estadousuario ? "Activo" : "Inactivo");
+             + "\nEstado del usuario: " + estadotexto;
     }
 
     

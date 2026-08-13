@@ -84,10 +84,17 @@ public class Reporte {
 
     @Override
     public String toString() {
+        String estadotexto = null;
+                if (estado){
+                    estadotexto = "Activo";
+                }else{
+                    estadotexto = "Anulada";
+                }
+                
         return "----- Reporte -----" + "\n"
              + "ID: " + id + "\n"
              + "Tipo: " + tipos + "\n"
-             + "Estado: " + (estado ? "Activo" : "Inactivo") + "\n";
+             + "Estado: " + estadotexto + "\n";
     }
 
 }
